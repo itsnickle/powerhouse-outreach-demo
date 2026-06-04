@@ -144,6 +144,12 @@
   #lightbox img{max-width:100%;max-height:80%;border-radius:10px}
   #lightbox .lbcap{color:#fff;margin-top:12px;font-size:14px;text-align:center;max-width:90%}
   #lightbox .lbx{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:20px;cursor:pointer}
+  .dsub{color:var(--muted);font-size:13px;font-weight:600;margin:2px 0 4px}
+  .drow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .drow:last-child{border-bottom:0}
+  .dleft b{font-size:14px;display:block} .dleft span{font-size:12px;color:var(--muted)}
+  .dright{font-size:15px;font-weight:800;color:var(--brand);white-space:nowrap}
+  .dtotal{display:flex;justify-content:space-between;font-weight:800;font-size:15px;border-top:2px solid #0f172a;padding-top:10px;margin-top:6px}
   #boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:80;color:var(--muted);font-weight:700}
 </style>
 </head>
@@ -171,10 +177,10 @@
       <button data-range="month">This Month</button>
     </div>
     <div class="stats">
-      <button class="stat food" onclick="go('receive')"><div class="ic">📦</div><div class="n" id="s-received">0</div><div class="l" id="l-received">Items received</div><div class="go">›</div></button>
-      <button class="stat cross" onclick="go('cross')"><div class="ic">🚗</div><div class="n" id="s-trips">0</div><div class="l" id="l-trips">Border crossings</div><div class="go">›</div></button>
-      <button class="stat pkg" onclick="go('distribute')"><div class="ic">🎁</div><div class="n" id="s-packages">0</div><div class="l" id="l-packages">Packages made</div><div class="go">›</div></button>
-      <button class="stat fam" onclick="go('distribute')"><div class="ic">🤝</div><div class="n" id="s-families">0</div><div class="l" id="l-families">Families served</div><div class="go">›</div></button>
+      <button class="stat food" onclick="openDetail('received')"><div class="ic">📦</div><div class="n" id="s-received">0</div><div class="l" id="l-received">Items received</div><div class="go">›</div></button>
+      <button class="stat cross" onclick="openDetail('trips')"><div class="ic">🚗</div><div class="n" id="s-trips">0</div><div class="l" id="l-trips">Border crossings</div><div class="go">›</div></button>
+      <button class="stat pkg" onclick="openDetail('packages')"><div class="ic">🎁</div><div class="n" id="s-packages">0</div><div class="l" id="l-packages">Packages made</div><div class="go">›</div></button>
+      <button class="stat fam" onclick="openDetail('families')"><div class="ic">🤝</div><div class="n" id="s-families">0</div><div class="l" id="l-families">Families served</div><div class="go">›</div></button>
     </div>
     <button class="quickbtn" id="home-report" onclick="go('reports')">📊 <span id="qb-report">Pastor Robert report</span></button>
     <div class="card"><h3 id="h-recent">Recent activity</h3><div id="recentList"></div></div>
@@ -356,6 +362,16 @@
   </div>
 </div>
 
+<div class="modal" id="detail">
+  <div class="sheet">
+    <button class="x" onclick="closeDetail()">✕</button>
+    <h3 id="detail-title">Detail</h3>
+    <div class="dsub" id="detail-sub"></div>
+    <div id="detail-list" style="margin:8px 0 14px"></div>
+    <button class="btn ghost" id="detail-add" onclick="detailAdd()">➕ Add</button>
+  </div>
+</div>
+
 <script>
 /* ===== Backend adapter: Google Sheet/Drive when deployed, localStorage when previewed ===== */
 var hasGS = (typeof google !== 'undefined' && google.script && google.script.run);
@@ -426,6 +442,7 @@ var I18N={
     setNote:"Changes here sync to everyone's app and to the automatic emails.",
     saved:"Saved",saving:"Saving…",deleted:"Entry removed",copied:"Copied",settingsSaved:"Settings saved",offline:"Saved on phone (will sync)",
     processing:"Processing photos…",uploading:"Uploading photos…",addFirst:"Add photos first",photosSaved:"Photos uploaded",photoEntry:"Photos",enterItem:"Enter an item",enterPkg:"Enter packages or families",enterPur:"Enter what was purchased",
+    detailTotal:"Total",detailEmpty:"Nothing logged for this period yet.",addReceive:"➕ Add received goods",addCross:"➕ Log a crossing",addDeliver:"➕ Log a delivery",
     cats:{Food:"Food",Medical:"Medical",Clothing:"Clothing",Hygiene:"Soap & Hygiene",Other:"Other"},units:["boxes","bags","items","cases","lbs","pallets"],
     recTo:"Emailed automatically to",subj:{daily:"Daily Outreach Update",weekly:"Weekly Outreach Summary",monthly:"Monthly Outreach Summary"},
     rGoods:"GOODS RECEIVED (Brownsville warehouse)",rCross:"BORDER CROSSINGS",rAreas:"Areas reached",rItems:"items received",rTrips:"crossings",rPkg:"packages made",rFam:"families served",rPhotos:"photos added",rPurchases:"spent on goods",
@@ -452,6 +469,7 @@ var I18N={
     setNote:"Los cambios aquí se sincronizan con la app de todos y con los correos automáticos.",
     saved:"Guardado",saving:"Guardando…",deleted:"Registro eliminado",copied:"Copiado",settingsSaved:"Ajustes guardados",offline:"Guardado en el teléfono (se sincronizará)",
     processing:"Procesando fotos…",uploading:"Subiendo fotos…",addFirst:"Agrega fotos primero",photosSaved:"Fotos subidas",photoEntry:"Fotos",enterItem:"Escribe el artículo",enterPkg:"Ingresa paquetes o familias",enterPur:"Escribe qué se compró",
+    detailTotal:"Total",detailEmpty:"Nada registrado en este período aún.",addReceive:"➕ Agregar bienes recibidos",addCross:"➕ Registrar un cruce",addDeliver:"➕ Registrar una entrega",
     cats:{Food:"Comida",Medical:"Médico",Clothing:"Ropa",Hygiene:"Jabón e higiene",Other:"Otro"},units:["cajas","bolsas","piezas","cajas grandes","libras","tarimas"],
     recTo:"Se envía por correo automáticamente a",subj:{daily:"Actualización diaria",weekly:"Resumen semanal",monthly:"Resumen mensual"},
     rGoods:"MERCANCÍA RECIBIDA (bodega de Brownsville)",rCross:"CRUCES DE FRONTERA",rAreas:"Zonas alcanzadas",rItems:"artículos recibidos",rTrips:"cruces",rPkg:"paquetes armados",rFam:"familias servidas",rPhotos:"fotos agregadas",rPurchases:"gastado en bienes",
@@ -681,6 +699,29 @@ function manifestCopy(){var T=t();
   var txt=(document.getElementById('m-from').value.split('\n')[0]||'')+'\n'+T.mDocTitle+'\n'+T.mDocSub+'\n\n'+T.mNo+': '+document.getElementById('m-no').value+'\n'+T.mDate+': '+document.getElementById('m-date').value+'\n'+T.mBy+': '+document.getElementById('m-person').value+'\n\nFROM:\n'+document.getElementById('m-from').value+'\n\nTO:\n'+document.getElementById('m-to').value+'\n\n'+lines+'\n\n'+T.mDeclareTitle+': '+T.mDeclareBody;
   if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){toast(T.copied);}).catch(function(){toast(T.copied);});}else toast(T.copied);}
 
+/* ===== Stat drill-down (what makes up each dashboard number) ===== */
+var DETAIL_META={received:{type:'receive',icon:'📦',add:'addReceive',tab:'receive'},trips:{type:'cross',icon:'🚗',add:'addCross',tab:'cross'},packages:{type:'distribute',icon:'🎁',add:'addDeliver',tab:'distribute'},families:{type:'distribute',icon:'🤝',add:'addDeliver',tab:'distribute'}};
+var currentDetail='received';
+function openDetail(metric){var T=t();var meta=DETAIL_META[metric];currentDetail=metric;
+  var recs=store.records.filter(function(x){return x.type===meta.type && inRange(x.datetime,range);}).sort(function(a,b){return new Date(b.datetime)-new Date(a.datetime);});
+  setTxt('detail-title',meta.icon+' '+T[metric]);
+  setTxt('detail-sub',range==='today'?T.today:range==='week'?T.week:T.month);
+  var total=0,rows='';
+  recs.forEach(function(x){var primary='',right='';
+    if(metric==='received'){var q=Number(x.qty)||0;total+=q;primary=(T.cats[x.category]||x.category)+': '+x.item;right=nf(q)+' '+(x.unit||'');}
+    else if(metric==='trips'){total+=1;var cs=(x.cats||[]).map(function(c){return T.cats[c]||c;}).join(', ');primary=(lang==='es'?'Cruce':'Crossing')+' #'+x.trip+(cs?' — '+cs:'');right='1';}
+    else if(metric==='packages'){var p=Number(x.packages)||0;total+=p;primary=x.location||'—';right=nf(p);}
+    else if(metric==='families'){var f=Number(x.families)||0;total+=f;primary=x.location||'—';right=nf(f);}
+    rows+='<div class="drow"><div class="dleft"><b>'+esc(primary)+'</b><span>'+esc(fmtTime(x.datetime)+' · '+(x.person||''))+'</span></div><div class="dright">'+esc(right)+'</div></div>';
+  });
+  var listEl=document.getElementById('detail-list');
+  if(!recs.length){listEl.innerHTML='<div class="empty" style="padding:18px 8px">'+T.detailEmpty+'</div>';}
+  else{listEl.innerHTML=rows+'<div class="dtotal"><span>'+T.detailTotal+'</span><span>'+nf(total)+'</span></div>';}
+  setTxt('detail-add',T[meta.add]);
+  document.getElementById('detail').classList.add('open');}
+function closeDetail(){document.getElementById('detail').classList.remove('open');}
+function detailAdd(){closeDetail();go(DETAIL_META[currentDetail].tab);}
+
 /* ===== Navigation ===== */
 function go(view){currentView=view;document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});document.getElementById('v-'+view).classList.add('active');
   document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===view);});window.scrollTo(0,0);
@@ -688,7 +729,8 @@ function go(view){currentView=view;document.querySelectorAll('.view').forEach(fu
 function wire(){document.querySelectorAll('#nav button').forEach(function(b){b.onclick=function(){go(b.dataset.go);};});
   document.querySelectorAll('#rangeSeg button').forEach(function(b){b.onclick=function(){range=b.dataset.range;document.querySelectorAll('#rangeSeg button').forEach(function(x){x.classList.toggle('on',x===b);});renderHome();};});
   document.querySelectorAll('#repSeg button').forEach(function(b){b.onclick=function(){repKind=b.dataset.rep;document.querySelectorAll('#repSeg button').forEach(function(x){x.classList.toggle('on',x===b);});renderReport();};});
-  document.getElementById('settings').addEventListener('click',function(e){if(e.target.id==='settings')closeSettings();});}
+  document.getElementById('settings').addEventListener('click',function(e){if(e.target.id==='settings')closeSettings();});
+  document.getElementById('detail').addEventListener('click',function(e){if(e.target.id==='detail')closeDetail();});}
 
 /* ===== Lang / Settings ===== */
 function toggleLang(){lang=lang==='en'?'es':'en';try{localStorage.setItem('ph_lang',lang);}catch(e){}renderAll();if(currentView==='photos')renderGallery();if(currentView==='manifest')renderManifestLines();}
