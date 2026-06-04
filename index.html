@@ -10,7 +10,7 @@
   :root{
     --brand:#1e3a8a; --brand2:#3b82f6; --accent:#f59e0b;
     --bg:#f1f5f9; --card:#ffffff; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
-    --food:#16a34a; --medical:#dc2626; --clothing:#8b5cf6; --hygiene:#0891b2; --other:#64748b;
+    --food:#16a34a; --medical:#dc2626; --clothing:#8b5cf6; --hygiene:#0891b2; --other:#64748b; --purchase:#7c3aed;
     --ok:#16a34a; --shadow:0 1px 3px rgba(15,23,42,.08),0 8px 24px rgba(15,23,42,.06);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -35,11 +35,13 @@
   .sub{color:var(--muted);font-size:13px;margin:-8px 0 16px}
   .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
   .card h3{margin:0 0 12px;font-size:15px}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
-  .stat{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px;position:relative;overflow:hidden}
-  .stat .n{font-size:26px;font-weight:800;line-height:1}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  .stat{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px;position:relative;overflow:hidden;cursor:pointer;border:0;text-align:left;width:100%;font-family:inherit}
+  .stat:active{transform:scale(.98)}
+  .stat .n{font-size:26px;font-weight:800;line-height:1;color:var(--ink)}
   .stat .l{font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
   .stat .ic{position:absolute;top:12px;right:12px;font-size:18px;opacity:.9}
+  .stat .go{position:absolute;bottom:10px;right:12px;font-size:12px;color:var(--brand2);font-weight:800;opacity:.55}
   .stat.food{border-top:3px solid var(--food)} .stat.cross{border-top:3px solid var(--brand2)}
   .stat.pkg{border-top:3px solid var(--accent)} .stat.fam{border-top:3px solid var(--food)}
   .seg{display:flex;background:#e8edf5;border-radius:12px;padding:4px;margin:0 0 14px;font-size:13px}
@@ -51,6 +53,9 @@
   textarea{min-height:64px;resize:vertical}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand2);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
   select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%2364748b' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
+  .amtwrap{position:relative}
+  .amtwrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:var(--muted)}
+  .amtwrap input{padding-left:26px}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
   .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;color:#334155}
@@ -65,7 +70,10 @@
   .btn{width:100%;border:0;border-radius:14px;padding:16px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));cursor:pointer;box-shadow:0 6px 16px rgba(37,99,235,.3)}
   .btn:active{transform:translateY(1px)} .btn[disabled]{opacity:.6}
   .btn.amber{background:linear-gradient(135deg,#d97706,var(--accent));box-shadow:0 6px 16px rgba(245,158,11,.3)}
+  .btn.purple{background:linear-gradient(135deg,#6d28d9,var(--purchase));box-shadow:0 6px 16px rgba(124,58,237,.3)}
   .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--line);box-shadow:none}
+  .quickbtn{width:100%;border:1.5px solid var(--line);background:#fff;color:var(--brand);border-radius:14px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .quickbtn:active{background:#f8fafc}
   .addphoto{width:100%;border:1.5px dashed var(--brand2);background:#eff6ff;color:var(--brand);border-radius:12px;padding:13px;font-weight:700;font-size:15px;cursor:pointer}
   .addphoto:active{background:#dbeafe}
   .photopick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
@@ -80,7 +88,7 @@
   .act{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
   .act:last-child{border-bottom:0}
   .act .dot{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px;flex:none}
-  .dot.receive{background:#dcfce7} .dot.cross{background:#dbeafe} .dot.distribute{background:#fef3c7} .dot.photo{background:#e0e7ff}
+  .dot.receive{background:#dcfce7} .dot.cross{background:#dbeafe} .dot.distribute{background:#fef3c7} .dot.photo{background:#e0e7ff} .dot.purchase{background:#ede9fe}
   .act .m{flex:1;min-width:0}
   .act .m b{font-size:14px;display:block} .act .m span{font-size:12px;color:var(--muted)}
   .act .del{border:0;background:transparent;color:#cbd5e1;font-size:20px;cursor:pointer;padding:0 4px}
@@ -89,26 +97,7 @@
   .empty .big{font-size:34px;display:block;margin-bottom:6px}
   pre.report{white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:13.5px;line-height:1.55;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:16px;margin:0 0 12px;color:#1e293b}
   .recip{font-size:13px;color:var(--muted);margin:0 0 10px} .recip b{color:var(--ink)}
-  nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(15,23,42,.06)}
-  nav button{flex:1;max-width:112px;border:0;background:transparent;padding:9px 1px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:10px;font-weight:700}
-  nav button .ni{font-size:20px;line-height:1}
-  nav button.on{color:var(--brand)} nav button.on .ni{transform:translateY(-1px)}
-  #toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:13px 20px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.3)}
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  .modal{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:60;display:none;align-items:flex-end}
-  .modal.open{display:flex}
-  .sheet{background:#fff;width:100%;max-width:560px;margin:0 auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
-  .sheet h3{margin:2px 0 4px;font-size:17px}
-  .sheet .x{float:right;border:0;background:#f1f5f9;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer}
-  .note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:11px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px}
-  #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px}
-  #lightbox.open{display:flex}
-  #lightbox img{max-width:100%;max-height:80%;border-radius:10px}
-  #lightbox .lbcap{color:#fff;margin-top:12px;font-size:14px;text-align:center;max-width:90%}
-  #lightbox .lbx{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:20px;cursor:pointer}
-  .quickbtn{width:100%;border:1.5px solid var(--line);background:#fff;color:var(--brand);border-radius:14px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:var(--shadow);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
-  .quickbtn:active{background:#f8fafc}
-  .mline{display:grid;grid-template-columns:1fr 64px 86px 30px;gap:6px;align-items:center;margin-bottom:6px}
+  .mline{display:grid;grid-template-columns:1fr 60px 84px 30px;gap:6px;align-items:center;margin-bottom:6px}
   .mline input,.mline select{padding:9px 8px;font-size:14px;border-radius:9px}
   .mline .rm{border:0;background:#fef2f2;color:#dc2626;border-radius:8px;height:38px;font-size:16px;cursor:pointer}
   .mlist-empty{color:var(--muted);font-size:13px;padding:8px 0}
@@ -137,6 +126,24 @@
     #manifestDoc{position:absolute;left:0;top:0;width:100%;border:0;border-radius:0;margin:0;padding:0 8mm;box-shadow:none}
     header,nav,#toast,.modal,#lightbox{display:none !important}
   }
+  nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(15,23,42,.06)}
+  nav button{flex:1;max-width:96px;border:0;background:transparent;padding:9px 1px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:9.5px;font-weight:700;overflow:hidden}
+  nav button .ni{font-size:20px;line-height:1}
+  nav button span:last-child{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  nav button.on{color:var(--brand)} nav button.on .ni{transform:translateY(-1px)}
+  #toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:13px 20px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .modal{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:60;display:none;align-items:flex-end}
+  .modal.open{display:flex}
+  .sheet{background:#fff;width:100%;max-width:560px;margin:0 auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+  .sheet h3{margin:2px 0 4px;font-size:17px}
+  .sheet .x{float:right;border:0;background:#f1f5f9;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer}
+  .note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:11px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px}
+  #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+  #lightbox.open{display:flex}
+  #lightbox img{max-width:100%;max-height:80%;border-radius:10px}
+  #lightbox .lbcap{color:#fff;margin-top:12px;font-size:14px;text-align:center;max-width:90%}
+  #lightbox .lbx{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:20px;cursor:pointer}
   #boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:80;color:var(--muted);font-weight:700}
 </style>
 </head>
@@ -164,12 +171,12 @@
       <button data-range="month">This Month</button>
     </div>
     <div class="stats">
-      <div class="stat food"><div class="ic">📦</div><div class="n" id="s-received">0</div><div class="l" id="l-received">Items received</div></div>
-      <div class="stat cross"><div class="ic">🚗</div><div class="n" id="s-trips">0</div><div class="l" id="l-trips">Border crossings</div></div>
-      <div class="stat pkg"><div class="ic">🎁</div><div class="n" id="s-packages">0</div><div class="l" id="l-packages">Packages made</div></div>
-      <div class="stat fam"><div class="ic">🤝</div><div class="n" id="s-families">0</div><div class="l" id="l-families">Families served</div></div>
+      <button class="stat food" onclick="go('receive')"><div class="ic">📦</div><div class="n" id="s-received">0</div><div class="l" id="l-received">Items received</div><div class="go">›</div></button>
+      <button class="stat cross" onclick="go('cross')"><div class="ic">🚗</div><div class="n" id="s-trips">0</div><div class="l" id="l-trips">Border crossings</div><div class="go">›</div></button>
+      <button class="stat pkg" onclick="go('distribute')"><div class="ic">🎁</div><div class="n" id="s-packages">0</div><div class="l" id="l-packages">Packages made</div><div class="go">›</div></button>
+      <button class="stat fam" onclick="go('distribute')"><div class="ic">🤝</div><div class="n" id="s-families">0</div><div class="l" id="l-families">Families served</div><div class="go">›</div></button>
     </div>
-    <button class="quickbtn" id="home-manifest" onclick="go('manifest')">📄 <span id="qb-manifest">Create donation manifest</span></button>
+    <button class="quickbtn" id="home-report" onclick="go('reports')">📊 <span id="qb-report">Pastor Robert report</span></button>
     <div class="card"><h3 id="h-recent">Recent activity</h3><div id="recentList"></div></div>
   </section>
 
@@ -187,6 +194,11 @@
       </div>
       <div class="field"><label class="f" id="lf-src">Source</label><input id="r-source" value="Powerhouse Church (Katy)" /></div>
       <div class="field"><label class="f" id="lf-notes1">Notes (optional)</label><textarea id="r-notes"></textarea></div>
+      <div class="field"><label class="f" id="r-photolbl">📷 Add photos (optional)</label>
+        <div class="photopick" id="r-photopick"></div>
+        <input type="file" id="r-photoinput" accept="image/*" multiple style="display:none" onchange="onPick('receive',this)" />
+        <button type="button" class="addphoto" id="r-addphoto" onclick="document.getElementById('r-photoinput').click()">➕ Add photos</button>
+      </div>
       <button class="btn" onclick="saveReceive(this)" id="b-receive">Save to inventory</button>
     </div>
   </section>
@@ -203,6 +215,11 @@
       <div class="field"><label class="f" id="lf-carry">What's in the car?</label><div class="chips" id="c-cats"></div></div>
       <div class="field"><label class="f" id="lf-load">Load description</label><input id="c-load" placeholder="e.g. Trunk + back seat full of food boxes" /></div>
       <div class="field"><label class="f" id="lf-notes2">Notes (optional)</label><textarea id="c-notes"></textarea></div>
+      <div class="field"><label class="f" id="c-photolbl">📷 Add photos (optional)</label>
+        <div class="photopick" id="c-photopick"></div>
+        <input type="file" id="c-photoinput" accept="image/*" multiple style="display:none" onchange="onPick('cross',this)" />
+        <button type="button" class="addphoto" id="c-addphoto" onclick="document.getElementById('c-photoinput').click()">➕ Add photos</button>
+      </div>
       <button class="btn" onclick="saveCross(this)" id="b-cross">Log crossing</button>
     </div>
   </section>
@@ -214,6 +231,7 @@
       <div class="field"><label class="f" id="lf-who2">Who is logging?</label><select id="d-person"></select></div>
       <div class="field"><label class="f" id="lf-pkg">Packages made</label>
         <div class="stepper"><button type="button" onclick="bump('d-packages',-10)">−</button><input id="d-packages" type="number" inputmode="numeric" value="0" min="0" /><button type="button" onclick="bump('d-packages',10)">+</button></div></div>
+      <div class="field"><label class="f" id="lf-contents">What's in the packages?</label><textarea id="d-contents" placeholder="e.g. Rice, beans, soap, canned goods, clothing"></textarea></div>
       <div class="field"><label class="f" id="lf-loc">Delivered to (area / outreach)</label><input id="d-location" placeholder="e.g. Colonia / neighborhood name" /></div>
       <div class="field"><label class="f" id="lf-served">Families served</label>
         <div class="stepper"><button type="button" onclick="bump('d-families',-5)">−</button><input id="d-families" type="number" inputmode="numeric" value="0" min="0" /><button type="button" onclick="bump('d-families',5)">+</button></div></div>
@@ -224,6 +242,24 @@
         <button type="button" class="addphoto" id="d-addphoto" onclick="document.getElementById('d-photoinput').click()">➕ Add photos</button>
       </div>
       <button class="btn amber" onclick="saveDistribute(this)" id="b-dist">Save packages</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-purchase">
+    <h2 class="title" id="t-pur">🛒 Purchase</h2>
+    <div class="sub" id="sub-pur">Log goods bought locally (e.g. funds sent to the Mexico church)</div>
+    <div class="card">
+      <div class="field"><label class="f" id="lf-purwho">Who purchased?</label><select id="pu-person"></select></div>
+      <div class="field"><label class="f" id="lf-purwhat">What was purchased?</label><input id="pu-item" placeholder="e.g. Rice, water, blankets" /></div>
+      <div class="field"><label class="f" id="lf-purhow">How much?</label>
+        <div class="amtwrap"><span>$</span><input id="pu-amount" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01" /></div></div>
+      <div class="field"><label class="f" id="lf-purnotes">Notes (optional)</label><textarea id="pu-notes" placeholder="e.g. bought by the Matamoros church"></textarea></div>
+      <div class="field"><label class="f" id="pu-photolbl">📷 Add photos / receipt (optional)</label>
+        <div class="photopick" id="pu-photopick"></div>
+        <input type="file" id="pu-photoinput" accept="image/*" multiple style="display:none" onchange="onPick('purchase',this)" />
+        <button type="button" class="addphoto" id="pu-addphoto" onclick="document.getElementById('pu-photoinput').click()">➕ Add photos</button>
+      </div>
+      <button class="btn purple" onclick="savePurchase(this)" id="b-pur">Save purchase</button>
     </div>
   </section>
 
@@ -242,21 +278,6 @@
     <div class="card"><h3 id="h-gallery">Gallery</h3><div id="galleryGrid"></div></div>
   </section>
 
-  <section class="view" id="v-reports">
-    <h2 class="title" id="t-rep">📊 Reports for Pastor Robert</h2>
-    <div class="sub" id="sub-rep">Preview the summary that is emailed automatically</div>
-    <div class="seg" id="repSeg">
-      <button data-rep="daily" class="on">Daily</button>
-      <button data-rep="weekly">Weekly (Fri)</button>
-      <button data-rep="monthly">Last Month</button>
-    </div>
-    <p class="recip" id="recipLine"></p>
-    <pre class="report" id="reportBody"></pre>
-    <button class="btn ghost" id="b-copy" onclick="copyReport()">Copy report text</button>
-    <div style="height:10px"></div>
-    <button class="btn ghost" id="b-export" onclick="exportData()">⬇︎ Export all data (CSV)</button>
-  </section>
-
   <section class="view" id="v-manifest">
     <h2 class="title" id="t-man">📄 Donation manifest</h2>
     <div class="sub" id="sub-man">A truthful packing list of the donated goods being carried</div>
@@ -271,7 +292,7 @@
       <div class="field"><label class="f" id="lf-mto">To (recipient &amp; address)</label><textarea id="m-to" style="min-height:58px"></textarea></div>
     </div>
     <div class="card">
-      <h3 id="h-mitems">Items in this load</h3>
+      <h3 id="h-mitems">Items in this load — tap to edit</h3>
       <button type="button" class="btn ghost" id="m-pull" onclick="manifestPullReceives()" style="margin-bottom:12px">⤵︎ Pull today's received goods</button>
       <div id="m-lines"></div>
       <div class="mline" style="margin-top:6px">
@@ -289,6 +310,21 @@
       <button class="btn ghost" id="b-mcopy" onclick="manifestCopy()">Copy as text</button>
     </div>
   </section>
+
+  <section class="view" id="v-reports">
+    <h2 class="title" id="t-rep">📊 Reports for Pastor Robert</h2>
+    <div class="sub" id="sub-rep">Preview the summary that is emailed automatically</div>
+    <div class="seg" id="repSeg">
+      <button data-rep="daily" class="on">Daily</button>
+      <button data-rep="weekly">Weekly (Fri)</button>
+      <button data-rep="monthly">Last Month</button>
+    </div>
+    <p class="recip" id="recipLine"></p>
+    <pre class="report" id="reportBody"></pre>
+    <button class="btn ghost" id="b-copy" onclick="copyReport()">Copy report text</button>
+    <div style="height:10px"></div>
+    <button class="btn ghost" id="b-export" onclick="exportData()">⬇︎ Export all data (CSV)</button>
+  </section>
 </main>
 
 <nav id="nav">
@@ -296,8 +332,9 @@
   <button data-go="receive"><span class="ni">📦</span><span id="n-receive">Receive</span></button>
   <button data-go="cross"><span class="ni">🚗</span><span id="n-cross">Cross</span></button>
   <button data-go="distribute"><span class="ni">🎁</span><span id="n-dist">Deliver</span></button>
+  <button data-go="purchase"><span class="ni">🛒</span><span id="n-pur">Purchase</span></button>
   <button data-go="photos"><span class="ni">📷</span><span id="n-photos">Photos</span></button>
-  <button data-go="reports"><span class="ni">📊</span><span id="n-rep">Reports</span></button>
+  <button data-go="manifest"><span class="ni">📄</span><span id="n-man">Manifest</span></button>
 </nav>
 
 <div id="toast"></div>
@@ -336,15 +373,14 @@ var Backend = {
   saveSettings:function(o){ return hasGS ? gs('saveSettings',o) : Promise.resolve(localSaveSettings(o)); },
   savePhotos:function(uris){ return hasGS ? gs('savePhotos',uris) : Promise.resolve(uris.map(function(u){return {data:u};})); }
 };
-/* localStorage fallback (preview / demo only) */
 function localStore(){ return JSON.parse(localStorage.getItem('pho_local')||'null'); }
 function localLoad(){
   var s = localStore();
-  if(!s){ s={orgName:'Powerhouse Outreach',route:'Brownsville → Matamoros',team:['Ana','Sofía','Luis','Diego'],pastorEmail:'pastor.robert@example.com',emailLang:'en',records:sampleRecords()}; localStorage.setItem('pho_local',JSON.stringify(s)); }
+  if(!s){ s={orgName:'Powerhouse Outreach',route:'Brownsville → Matamoros',team:['Ana','Sofía','Luis','Diego'],pastorEmail:'pastor.robert@example.com',emailLang:'en',records:sampleRecords()}; try{localStorage.setItem('pho_local',JSON.stringify(s));}catch(e){} }
   return s;
 }
 function localPersist(){ try{ localStorage.setItem('pho_local', JSON.stringify(store)); }catch(e){} }
-function localAdd(rec){ rec.id='r'+Date.now()+Math.floor(Math.random()*1000); rec.datetime=new Date().toISOString(); localPersist(); return rec; } /* caller already added rec optimistically */
+function localAdd(rec){ rec.id='r'+Date.now()+Math.floor(Math.random()*1000); rec.datetime=new Date().toISOString(); localPersist(); return rec; }
 function localDel(id){ store.records=store.records.filter(function(r){return r.id!==id;}); localPersist(); return true; }
 function localSaveSettings(o){ if(o.team&&o.team.length)store.team=o.team; if(o.pastorEmail)store.pastorEmail=o.pastorEmail; localPersist(); return {team:store.team,pastorEmail:store.pastorEmail,emailLang:store.emailLang}; }
 function iso(d,h,m){ var x=new Date(); x.setDate(x.getDate()-d); x.setHours(h||10,m||0,0,0); return x.toISOString(); }
@@ -357,29 +393,31 @@ function sampleRecords(){ return [
   {id:'a5',type:'cross',datetime:iso(0,11,30),person:'Ana',trip:1,cats:['Food','Clothing'],load:'Boxes to the window',photos:[],notes:''},
   {id:'a6',type:'cross',datetime:iso(0,12,15),person:'Diego',trip:2,cats:['Medical','Hygiene'],load:'Back seat + trunk',photos:[],notes:''},
   {id:'a7',type:'cross',datetime:iso(0,14,0),person:'Luis',trip:1,cats:['Food'],load:'Full load of rice + beans',photos:[],notes:''},
-  {id:'a8',type:'distribute',datetime:iso(0,16,0),person:'Sofía',packages:1040,location:'Colonia Esperanza',families:1040,cats:[],photos:[],notes:'Big packing day'},
+  {id:'a8',type:'distribute',datetime:iso(0,16,0),person:'Sofía',packages:1040,location:'Colonia Esperanza',families:1040,contents:'Rice, beans, soap, canned goods',cats:[],photos:[],notes:'Big packing day'},
+  {id:'ap',type:'purchase',datetime:iso(0,13,0),person:'Diego',item:'Drinking water + rice',amount:240,cats:[],photos:[],notes:'Bought by the Matamoros church'},
   {id:'b1',type:'receive',datetime:iso(1,9,0),person:'Ana',category:'Clothing',item:'Winter coats',qty:8,unit:'boxes',source:'Powerhouse Church (Katy)',cats:[],photos:[],notes:''},
   {id:'b2',type:'cross',datetime:iso(1,11,0),person:'Diego',trip:1,cats:['Clothing','Food'],load:'Full car',photos:[],notes:''},
-  {id:'b4',type:'distribute',datetime:iso(1,15,30),person:'Luis',packages:320,location:'Colonia Las Flores',families:300,cats:[],photos:[],notes:''},
+  {id:'b4',type:'distribute',datetime:iso(1,15,30),person:'Luis',packages:320,location:'Colonia Las Flores',families:300,contents:'Food + hygiene kits',cats:[],photos:[],notes:''},
   {id:'c2',type:'cross',datetime:iso(3,11,0),person:'Luis',trip:1,cats:['Food'],load:'Full',photos:[],notes:''},
-  {id:'c3',type:'distribute',datetime:iso(3,15,0),person:'Diego',packages:280,location:'Centro Matamoros',families:265,cats:[],photos:[],notes:''},
-  {id:'lm1',type:'distribute',datetime:lastMonthIso(),person:'Ana',packages:2450,location:'Colonia Buenavista',families:2300,cats:[],photos:[],notes:'Last month outreach'}
+  {id:'c3',type:'distribute',datetime:iso(3,15,0),person:'Diego',packages:280,location:'Centro Matamoros',families:265,contents:'Food boxes',cats:[],photos:[],notes:''},
+  {id:'lm1',type:'distribute',datetime:lastMonthIso(),person:'Ana',packages:2450,location:'Colonia Buenavista',families:2300,contents:'Food + clothing',cats:[],photos:[],notes:'Last month outreach'}
 ]; }
 
 /* ===== i18n ===== */
 var I18N={
   en:{appName:"Powerhouse Outreach",appTag:"Brownsville → Matamoros",lang:"ES",today:"Today",week:"This Week",month:"This Month",
     received:"Items received",trips:"Border crossings",packages:"Packages made",families:"Families served",
-    recent:"Recent activity",noActivity:"No activity yet. Use the buttons below to start logging.",
-    nHome:"Home",nReceive:"Receive",nCross:"Cross",nDist:"Deliver",nPhotos:"Photos",nRep:"Reports",
+    recent:"Recent activity",noActivity:"No activity yet. Use the tabs below to start logging.",
+    nHome:"Home",nReceive:"Receive",nCross:"Cross",nDist:"Deliver",nPur:"Purchase",nPhotos:"Photos",nMan:"Manifest",qbReport:"Pastor Robert report",
     tReceive:"📦 Receive goods",subReceive:"Log what arrived at the Brownsville warehouse",
     who:"Who is logging?",cat:"Category",item:"Item description",qty:"Quantity",unit:"Unit",src:"Source",notes:"Notes (optional)",bReceive:"Save to inventory",
     tCross:"🚗 Cross the border",subCross:"Log a trip carrying goods to Matamoros",driver:"Driver",trip:"Trip # today",carry:"What's in the car?",load:"Load description",bCross:"Log crossing",
-    tDist:"🎁 Packages & outreach",subDist:"Log packages made and where they were delivered",pkg:"Packages made",loc:"Delivered to (area / outreach)",served:"Families served",bDist:"Save packages",dphoto:"📷 Add photos (optional)",
+    tDist:"🎁 Packages & outreach",subDist:"Log packages made and where they were delivered",pkg:"Packages made",contents:"What's in the packages?",loc:"Delivered to (area / outreach)",served:"Families served",bDist:"Save packages",dphoto:"📷 Add photos (optional)",
+    tPur:"🛒 Purchase",subPur:"Log goods bought locally (e.g. funds sent to the Mexico church)",purWho:"Who purchased?",purWhat:"What was purchased?",purHow:"How much?",purPhoto:"📷 Add photos / receipt (optional)",bPur:"Save purchase",purchaseEntry:"Purchase",
     tPhotos:"📷 Photos",subPhotos:"Add photos of deliveries, packing, and outreach",pwho:"Who is uploading?",caption:"Caption (optional)",addPhotos:"➕ Add photos",uploadPhotos:"Upload photos",gallery:"Gallery",noPhotos:"No photos yet. Tap “Add photos” to upload.",
     tRep:"📊 Reports for Pastor Robert",subRep:"Preview the summary that is emailed automatically",daily:"Daily",weekly:"Weekly (Fri)",monthly:"Last Month",copy:"Copy report text",exportd:"⬇︎ Export all data (CSV)",
-    qbManifest:"Create donation manifest",tMan:"📄 Donation manifest",subMan:"A truthful packing list of the donated goods being carried",manNote:"List only the goods actually being carried. This is an honest packing list of donated items for charitable relief — not a sales invoice.",
-    mDate:"Date",mNo:"Manifest #",mBy:"Prepared by",mFrom:"From (donor organization & address)",mTo:"To (recipient & address)",hMItems:"Items in this load",mPull:"⤵︎ Pull today's received goods",mGen:"Generate manifest",mPrint:"🖨 Print / Save as PDF",mCopyBtn:"Copy as text",
+    tMan:"📄 Donation manifest",subMan:"A truthful packing list of the donated goods being carried",manNote:"List only the goods actually being carried. This is an honest packing list of donated items for charitable relief — not a sales invoice.",
+    mDate:"Date",mNo:"Manifest #",mBy:"Prepared by",mFrom:"From (donor organization & address)",mTo:"To (recipient & address)",hMItems:"Items in this load — tap to edit",mPull:"⤵︎ Pull today's received goods",mGen:"Generate manifest",mPrint:"🖨 Print / Save as PDF",mCopyBtn:"Copy as text",
     mItemPH:"Item (e.g. Rice)",mQtyPH:"Qty",mNoItems:"No items yet. Pull today's goods or add a line above.",mNeedItems:"Add at least one item first",mItemsAdded:"items added",mNoReceipts:"No goods received today",
     mDocTitle:"DONATION MANIFEST & PACKING LIST",mDocSub:"Charitable humanitarian donation — not for resale",mFromL:"From (donor)",mToL:"To (recipient)",mItem:"Item",mCat:"Category",mQty:"Qty",mUnit:"Unit",mLineItems:"Line items",mTotalQty:"Total quantity",
     mDeclareTitle:"Declaration",mDeclareBody:"The goods listed above are a charitable donation of humanitarian relief, given free of charge for distribution to families in need. They are NOT FOR RESALE and carry no commercial value.",
@@ -387,24 +425,25 @@ var I18N={
     setTitle:"Settings",team:"Team members (one per line)",pastor:"Pastor Robert's email",setSave:"Save settings",
     setNote:"Changes here sync to everyone's app and to the automatic emails.",
     saved:"Saved",saving:"Saving…",deleted:"Entry removed",copied:"Copied",settingsSaved:"Settings saved",offline:"Saved on phone (will sync)",
-    processing:"Processing photos…",uploading:"Uploading photos…",addFirst:"Add photos first",photosSaved:"Photos uploaded",photoEntry:"Photos",
+    processing:"Processing photos…",uploading:"Uploading photos…",addFirst:"Add photos first",photosSaved:"Photos uploaded",photoEntry:"Photos",enterItem:"Enter an item",enterPkg:"Enter packages or families",enterPur:"Enter what was purchased",
     cats:{Food:"Food",Medical:"Medical",Clothing:"Clothing",Hygiene:"Soap & Hygiene",Other:"Other"},units:["boxes","bags","items","cases","lbs","pallets"],
     recTo:"Emailed automatically to",subj:{daily:"Daily Outreach Update",weekly:"Weekly Outreach Summary",monthly:"Monthly Outreach Summary"},
-    rGoods:"GOODS RECEIVED (Brownsville warehouse)",rCross:"BORDER CROSSINGS",rAreas:"Areas reached",rItems:"items received",rTrips:"crossings",rPkg:"packages made",rFam:"families served",rPhotos:"photos added",
+    rGoods:"GOODS RECEIVED (Brownsville warehouse)",rCross:"BORDER CROSSINGS",rAreas:"Areas reached",rItems:"items received",rTrips:"crossings",rPkg:"packages made",rFam:"families served",rPhotos:"photos added",rPurchases:"spent on goods",
     rNothing:"No activity logged for this period.",rThanks:"In His service,\nThe Brownsville outreach team",rGreeting:"Pastor Robert,",
     rIntro:{daily:"Here is today's outreach activity:",weekly:"Here is this week's outreach summary:",monthly:"Here is last month's outreach summary:"}},
   es:{appName:"Alcance Powerhouse",appTag:"Brownsville → Matamoros",lang:"EN",today:"Hoy",week:"Esta semana",month:"Este mes",
     received:"Artículos recibidos",trips:"Cruces de frontera",packages:"Paquetes armados",families:"Familias servidas",
-    recent:"Actividad reciente",noActivity:"Sin actividad aún. Usa los botones de abajo para registrar.",
-    nHome:"Inicio",nReceive:"Recibir",nCross:"Cruzar",nDist:"Entregar",nPhotos:"Fotos",nRep:"Reportes",
+    recent:"Actividad reciente",noActivity:"Sin actividad aún. Usa las pestañas de abajo para registrar.",
+    nHome:"Inicio",nReceive:"Recibir",nCross:"Cruzar",nDist:"Entregar",nPur:"Compra",nPhotos:"Fotos",nMan:"Manifiesto",qbReport:"Reporte para Pastor Robert",
     tReceive:"📦 Recibir mercancía",subReceive:"Registra lo que llegó a la bodega de Brownsville",
     who:"¿Quién registra?",cat:"Categoría",item:"Descripción del artículo",qty:"Cantidad",unit:"Unidad",src:"Origen",notes:"Notas (opcional)",bReceive:"Guardar en inventario",
     tCross:"🚗 Cruzar la frontera",subCross:"Registra un viaje llevando mercancía a Matamoros",driver:"Conductor",trip:"Viaje # hoy",carry:"¿Qué lleva el carro?",load:"Descripción de la carga",bCross:"Registrar cruce",
-    tDist:"🎁 Paquetes y alcance",subDist:"Registra paquetes armados y dónde se entregaron",pkg:"Paquetes armados",loc:"Entregado en (zona / alcance)",served:"Familias servidas",bDist:"Guardar paquetes",dphoto:"📷 Agregar fotos (opcional)",
+    tDist:"🎁 Paquetes y alcance",subDist:"Registra paquetes armados y dónde se entregaron",pkg:"Paquetes armados",contents:"¿Qué contienen los paquetes?",loc:"Entregado en (zona / alcance)",served:"Familias servidas",bDist:"Guardar paquetes",dphoto:"📷 Agregar fotos (opcional)",
+    tPur:"🛒 Compra",subPur:"Registra bienes comprados localmente (ej. fondos enviados a la iglesia en México)",purWho:"¿Quién compró?",purWhat:"¿Qué se compró?",purHow:"¿Cuánto?",purPhoto:"📷 Agregar fotos / recibo (opcional)",bPur:"Guardar compra",purchaseEntry:"Compra",
     tPhotos:"📷 Fotos",subPhotos:"Agrega fotos de entregas, empaque y alcance",pwho:"¿Quién sube las fotos?",caption:"Descripción (opcional)",addPhotos:"➕ Agregar fotos",uploadPhotos:"Subir fotos",gallery:"Galería",noPhotos:"Sin fotos aún. Toca “Agregar fotos” para subir.",
     tRep:"📊 Reportes para Pastor Robert",subRep:"Vista previa del resumen que se envía por correo automáticamente",daily:"Diario",weekly:"Semanal (vie)",monthly:"Mes pasado",copy:"Copiar texto del reporte",exportd:"⬇︎ Exportar datos (CSV)",
-    qbManifest:"Crear manifiesto de donación",tMan:"📄 Manifiesto de donación",subMan:"Una lista veraz de empaque de los bienes donados que se transportan",manNote:"Incluye solo los bienes que realmente se transportan. Esta es una lista de empaque honesta de artículos donados para ayuda caritativa — no es una factura de venta.",
-    mDate:"Fecha",mNo:"Manifiesto #",mBy:"Preparado por",mFrom:"De (organización donante y dirección)",mTo:"Para (destinatario y dirección)",hMItems:"Artículos en esta carga",mPull:"⤵︎ Traer los bienes recibidos hoy",mGen:"Generar manifiesto",mPrint:"🖨 Imprimir / Guardar PDF",mCopyBtn:"Copiar como texto",
+    tMan:"📄 Manifiesto de donación",subMan:"Una lista veraz de empaque de los bienes donados que se transportan",manNote:"Incluye solo los bienes que realmente se transportan. Esta es una lista de empaque honesta de artículos donados para ayuda caritativa — no es una factura de venta.",
+    mDate:"Fecha",mNo:"Manifiesto #",mBy:"Preparado por",mFrom:"De (organización donante y dirección)",mTo:"Para (destinatario y dirección)",hMItems:"Artículos en esta carga — toca para editar",mPull:"⤵︎ Traer los bienes recibidos hoy",mGen:"Generar manifiesto",mPrint:"🖨 Imprimir / Guardar PDF",mCopyBtn:"Copiar como texto",
     mItemPH:"Artículo (ej. Arroz)",mQtyPH:"Cant.",mNoItems:"Sin artículos aún. Trae los bienes de hoy o agrega una línea arriba.",mNeedItems:"Agrega al menos un artículo",mItemsAdded:"artículos agregados",mNoReceipts:"No se recibieron bienes hoy",
     mDocTitle:"MANIFIESTO DE DONACIÓN Y LISTA DE EMPAQUE",mDocSub:"Donación humanitaria caritativa — no para reventa",mFromL:"De (donante)",mToL:"Para (destinatario)",mItem:"Artículo",mCat:"Categoría",mQty:"Cant.",mUnit:"Unidad",mLineItems:"Líneas",mTotalQty:"Cantidad total",
     mDeclareTitle:"Declaración",mDeclareBody:"Los bienes listados arriba son una donación caritativa de ayuda humanitaria, entregada de forma gratuita para distribución a familias necesitadas. NO SON PARA REVENTA y no tienen valor comercial.",
@@ -412,10 +451,10 @@ var I18N={
     setTitle:"Ajustes",team:"Miembros del equipo (uno por línea)",pastor:"Correo del Pastor Robert",setSave:"Guardar ajustes",
     setNote:"Los cambios aquí se sincronizan con la app de todos y con los correos automáticos.",
     saved:"Guardado",saving:"Guardando…",deleted:"Registro eliminado",copied:"Copiado",settingsSaved:"Ajustes guardados",offline:"Guardado en el teléfono (se sincronizará)",
-    processing:"Procesando fotos…",uploading:"Subiendo fotos…",addFirst:"Agrega fotos primero",photosSaved:"Fotos subidas",photoEntry:"Fotos",
+    processing:"Procesando fotos…",uploading:"Subiendo fotos…",addFirst:"Agrega fotos primero",photosSaved:"Fotos subidas",photoEntry:"Fotos",enterItem:"Escribe el artículo",enterPkg:"Ingresa paquetes o familias",enterPur:"Escribe qué se compró",
     cats:{Food:"Comida",Medical:"Médico",Clothing:"Ropa",Hygiene:"Jabón e higiene",Other:"Otro"},units:["cajas","bolsas","piezas","cajas grandes","libras","tarimas"],
     recTo:"Se envía por correo automáticamente a",subj:{daily:"Actualización diaria",weekly:"Resumen semanal",monthly:"Resumen mensual"},
-    rGoods:"MERCANCÍA RECIBIDA (bodega de Brownsville)",rCross:"CRUCES DE FRONTERA",rAreas:"Zonas alcanzadas",rItems:"artículos recibidos",rTrips:"cruces",rPkg:"paquetes armados",rFam:"familias servidas",rPhotos:"fotos agregadas",
+    rGoods:"MERCANCÍA RECIBIDA (bodega de Brownsville)",rCross:"CRUCES DE FRONTERA",rAreas:"Zonas alcanzadas",rItems:"artículos recibidos",rTrips:"cruces",rPkg:"paquetes armados",rFam:"familias servidas",rPhotos:"fotos agregadas",rPurchases:"gastado en bienes",
     rNothing:"No se registró actividad en este período.",rThanks:"A su servicio,\nEl equipo de alcance de Brownsville",rGreeting:"Pastor Robert,",
     rIntro:{daily:"Esta es la actividad de alcance de hoy:",weekly:"Este es el resumen de alcance de esta semana:",monthly:"Este es el resumen de alcance del mes pasado:"}}
 };
@@ -425,7 +464,8 @@ var CATS=["Food","Medical","Clothing","Hygiene","Other"];
 var lang = localStorage.getItem('ph_lang') || 'en';
 var store = {orgName:'Powerhouse Outreach',route:'Brownsville → Matamoros',team:['Ana','Sofía','Luis','Diego'],pastorEmail:'',emailLang:'en',records:[]};
 var range='today', repKind='daily', selReceiveCat='Food', selCrossCats={}, currentView='home';
-var pending={deliver:[],photos:[]};
+var pending={receive:[],cross:[],deliver:[],purchase:[],photos:[]};
+var PICK_PREFIX={receive:'r',cross:'c',deliver:'d',purchase:'pu',photos:'p'};
 var manifestLines=[];
 function t(){ return I18N[lang]; }
 
@@ -441,40 +481,41 @@ function inRange(ts,r){var d=new Date(ts);
   return true;}
 function fmtTime(ts){return new Date(ts).toLocaleString(lang==='es'?'es-MX':'en-US',{weekday:'short',hour:'numeric',minute:'2-digit'});}
 function nf(n){return (Number(n)||0).toLocaleString();}
+function money(n){return '$'+(Number(n)||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
 
 /* ===== Aggregate ===== */
 function agg(r){var recs=store.records.filter(function(x){return inRange(x.datetime,r);});
-  var items=0,trips=0,packages=0,families=0,photos=0,areas={},byCat={};
+  var items=0,trips=0,packages=0,families=0,photos=0,purchases=0,areas={},byCat={};
   recs.forEach(function(x){
     if(x.photos&&x.photos.length)photos+=x.photos.length;
     if(x.type==='receive'){items+=Number(x.qty)||0;byCat[x.category]=(byCat[x.category]||0)+(Number(x.qty)||0);}
     if(x.type==='cross'){trips++;}
     if(x.type==='distribute'){packages+=Number(x.packages)||0;families+=Number(x.families)||0;if(x.location)areas[x.location]=1;}
+    if(x.type==='purchase'){purchases+=Number(x.amount)||0;}
   });
-  return {items:items,trips:trips,packages:packages,families:families,photos:photos,areas:Object.keys(areas),byCat:byCat,recs:recs};}
+  return {items:items,trips:trips,packages:packages,families:families,photos:photos,purchases:purchases,areas:Object.keys(areas),byCat:byCat,recs:recs};}
 
 /* ===== Render ===== */
 function setTxt(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
 function applyText(){var T=t();document.documentElement.lang=lang;
   setTxt('appName',store.orgName||T.appName);setTxt('appTag',store.route||T.appTag);setTxt('langBtn',T.lang);
   var sg=document.querySelectorAll('#rangeSeg button');sg[0].textContent=T.today;sg[1].textContent=T.week;sg[2].textContent=T.month;
-  setTxt('l-received',T.received);setTxt('l-trips',T.trips);setTxt('l-packages',T.packages);setTxt('l-families',T.families);setTxt('h-recent',T.recent);
-  setTxt('n-home',T.nHome);setTxt('n-receive',T.nReceive);setTxt('n-cross',T.nCross);setTxt('n-dist',T.nDist);setTxt('n-photos',T.nPhotos);setTxt('n-rep',T.nRep);
-  setTxt('t-receive',T.tReceive);setTxt('sub-receive',T.subReceive);setTxt('lf-who',T.who);setTxt('lf-cat',T.cat);setTxt('lf-item',T.item);setTxt('lf-qty',T.qty);setTxt('lf-unit',T.unit);setTxt('lf-src',T.src);setTxt('lf-notes1',T.notes);setTxt('b-receive',T.bReceive);
-  setTxt('t-cross',T.tCross);setTxt('sub-cross',T.subCross);setTxt('lf-driver',T.driver);setTxt('lf-trip',T.trip);setTxt('lf-carry',T.carry);setTxt('lf-load',T.load);setTxt('lf-notes2',T.notes);setTxt('b-cross',T.bCross);
-  setTxt('t-dist',T.tDist);setTxt('sub-dist',T.subDist);setTxt('lf-who2',T.who);setTxt('lf-pkg',T.pkg);setTxt('lf-loc',T.loc);setTxt('lf-served',T.served);setTxt('lf-notes3',T.notes);setTxt('lf-dphoto',T.dphoto);setTxt('d-addphoto',T.addPhotos);setTxt('b-dist',T.bDist);
+  setTxt('l-received',T.received);setTxt('l-trips',T.trips);setTxt('l-packages',T.packages);setTxt('l-families',T.families);setTxt('qb-report',T.qbReport);setTxt('h-recent',T.recent);
+  setTxt('n-home',T.nHome);setTxt('n-receive',T.nReceive);setTxt('n-cross',T.nCross);setTxt('n-dist',T.nDist);setTxt('n-pur',T.nPur);setTxt('n-photos',T.nPhotos);setTxt('n-man',T.nMan);
+  setTxt('t-receive',T.tReceive);setTxt('sub-receive',T.subReceive);setTxt('lf-who',T.who);setTxt('lf-cat',T.cat);setTxt('lf-item',T.item);setTxt('lf-qty',T.qty);setTxt('lf-unit',T.unit);setTxt('lf-src',T.src);setTxt('lf-notes1',T.notes);setTxt('r-photolbl',T.dphoto);setTxt('r-addphoto',T.addPhotos);setTxt('b-receive',T.bReceive);
+  setTxt('t-cross',T.tCross);setTxt('sub-cross',T.subCross);setTxt('lf-driver',T.driver);setTxt('lf-trip',T.trip);setTxt('lf-carry',T.carry);setTxt('lf-load',T.load);setTxt('lf-notes2',T.notes);setTxt('c-photolbl',T.dphoto);setTxt('c-addphoto',T.addPhotos);setTxt('b-cross',T.bCross);
+  setTxt('t-dist',T.tDist);setTxt('sub-dist',T.subDist);setTxt('lf-who2',T.who);setTxt('lf-pkg',T.pkg);setTxt('lf-contents',T.contents);setTxt('lf-loc',T.loc);setTxt('lf-served',T.served);setTxt('lf-notes3',T.notes);setTxt('lf-dphoto',T.dphoto);setTxt('d-addphoto',T.addPhotos);setTxt('b-dist',T.bDist);
+  setTxt('t-pur',T.tPur);setTxt('sub-pur',T.subPur);setTxt('lf-purwho',T.purWho);setTxt('lf-purwhat',T.purWhat);setTxt('lf-purhow',T.purHow);setTxt('lf-purnotes',T.notes);setTxt('pu-photolbl',T.purPhoto);setTxt('pu-addphoto',T.addPhotos);setTxt('b-pur',T.bPur);
   setTxt('t-photos',T.tPhotos);setTxt('sub-photos',T.subPhotos);setTxt('lf-pwho',T.pwho);setTxt('lf-pcap',T.caption);setTxt('p-addphoto',T.addPhotos);setTxt('b-photos',T.uploadPhotos);setTxt('h-gallery',T.gallery);
   setTxt('t-rep',T.tRep);setTxt('sub-rep',T.subRep);var rs=document.querySelectorAll('#repSeg button');rs[0].textContent=T.daily;rs[1].textContent=T.weekly;rs[2].textContent=T.monthly;setTxt('b-copy',T.copy);setTxt('b-export',T.exportd);
-  setTxt('qb-manifest',T.qbManifest);setTxt('t-man',T.tMan);setTxt('sub-man',T.subMan);setTxt('man-note',T.manNote);
-  setTxt('lf-mdate',T.mDate);setTxt('lf-mno',T.mNo);setTxt('lf-mby',T.mBy);setTxt('lf-mfrom',T.mFrom);setTxt('lf-mto',T.mTo);
-  setTxt('h-mitems',T.hMItems);setTxt('m-pull',T.mPull);setTxt('b-mgen',T.mGen);setTxt('b-mprint',T.mPrint);setTxt('b-mcopy',T.mCopyBtn);
+  setTxt('t-man',T.tMan);setTxt('sub-man',T.subMan);setTxt('man-note',T.manNote);setTxt('lf-mdate',T.mDate);setTxt('lf-mno',T.mNo);setTxt('lf-mby',T.mBy);setTxt('lf-mfrom',T.mFrom);setTxt('lf-mto',T.mTo);setTxt('h-mitems',T.hMItems);setTxt('m-pull',T.mPull);setTxt('b-mgen',T.mGen);setTxt('b-mprint',T.mPrint);setTxt('b-mcopy',T.mCopyBtn);
   var mi=document.getElementById('m-newitem');if(mi)mi.placeholder=T.mItemPH;var mq=document.getElementById('m-newqty');if(mq)mq.placeholder=T.mQtyPH;
   setTxt('set-title',T.setTitle);setTxt('set-team',T.team);setTxt('set-pastor',T.pastor);setTxt('set-save',T.setSave);setTxt('set-note',T.setNote);}
 function renderChips(){var T=t();var rc=document.getElementById('r-cats');rc.innerHTML='';
   CATS.forEach(function(c){var b=document.createElement('button');b.className='chip'+(c===selReceiveCat?' on':'');b.dataset.cat=c;b.type='button';b.textContent=T.cats[c];b.onclick=function(){selReceiveCat=c;renderChips();};rc.appendChild(b);});
   var cc=document.getElementById('c-cats');cc.innerHTML='';
   CATS.forEach(function(c){var b=document.createElement('button');b.className='chip'+(selCrossCats[c]?' on':'');b.dataset.cat=c;b.type='button';b.textContent=T.cats[c];b.onclick=function(){selCrossCats[c]=!selCrossCats[c];renderChips();};cc.appendChild(b);});}
-function renderPeople(){['r-person','c-person','d-person','p-person','m-person'].forEach(function(id){var sel=document.getElementById(id);if(!sel)return;var cur=sel.value;sel.innerHTML='';store.team.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);});if(store.team.indexOf(cur)>=0)sel.value=cur;});
+function renderPeople(){['r-person','c-person','d-person','pu-person','p-person','m-person'].forEach(function(id){var sel=document.getElementById(id);if(!sel)return;var cur=sel.value;sel.innerHTML='';store.team.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);});if(store.team.indexOf(cur)>=0)sel.value=cur;});
   var us=document.getElementById('r-unit');us.innerHTML='';t().units.forEach(function(u){var o=document.createElement('option');o.value=u;o.textContent=u;us.appendChild(o);});}
 function renderHome(){var T=t();var a=agg(range);
   setTxt('s-received',nf(a.items));setTxt('s-trips',nf(a.trips));setTxt('s-packages',nf(a.packages));setTxt('s-families',nf(a.families));
@@ -486,6 +527,7 @@ function renderHome(){var T=t();var a=agg(range);
     if(x.type==='receive'){icon='📦';title=(T.cats[x.category]||x.category)+': '+x.item+' ×'+x.qty+' '+(x.unit||'');}
     if(x.type==='cross'){icon='🚗';var cs=(x.cats||[]).map(function(c){return T.cats[c]||c;}).join(', ');title=(lang==='es'?'Cruce':'Crossing')+' #'+x.trip+(cs?' — '+cs:'');}
     if(x.type==='distribute'){icon='🎁';title=nf(x.packages)+' '+T.rPkg.split(' ')[0]+' → '+(x.location||'—');}
+    if(x.type==='purchase'){icon='🛒';title=money(x.amount)+' — '+(x.item||T.purchaseEntry);}
     if(x.type==='photo'){icon='📷';title=x.notes||T.photoEntry;}
     var badge=(x.photos&&x.photos.length)?' <span class="photobadge">📷 '+x.photos.length+'</span>':'';
     div.innerHTML='<div class="dot '+x.type+'">'+icon+'</div><div class="m"><b>'+esc(title)+badge+'</b><span>'+esc(sub)+'</span></div><button class="del" onclick="del(\''+x.id+'\')">🗑</button>';
@@ -496,6 +538,7 @@ function renderReport(){var T=t();var map={daily:'today',weekly:'week',monthly:'
   var b=T.rGreeting+'\n\n'+T.rIntro[repKind]+'\n────────────────────\n📅 '+dateStr+'\n────────────────────\n\n';
   b+='📦 '+nf(a.items)+' '+T.rItems+'\n🚗 '+nf(a.trips)+' '+T.rTrips+'\n🎁 '+nf(a.packages)+' '+T.rPkg+'\n🤝 '+nf(a.families)+' '+T.rFam+'\n';
   if(a.photos)b+='📷 '+nf(a.photos)+' '+T.rPhotos+'\n';
+  if(a.purchases)b+='💵 '+money(a.purchases)+' '+T.rPurchases+'\n';
   b+='\n';
   if(!a.recs.length){b+=T.rNothing+'\n';}else{var cats=Object.keys(a.byCat);
     if(cats.length){b+=T.rGoods+'\n';cats.forEach(function(c){b+='  • '+(T.cats[c]||c)+': '+nf(a.byCat[c])+'\n';});b+='\n';}
@@ -504,6 +547,7 @@ function renderReport(){var T=t();var map={daily:'today',weekly:'week',monthly:'
   b+='────────────────────\n'+T.rThanks;
   document.getElementById('reportBody').textContent=b;}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
 function renderAll(){applyText();renderChips();renderPeople();renderHome();renderReport();}
 
 /* ===== Photos ===== */
@@ -521,14 +565,13 @@ function compressImage(file){return new Promise(function(resolve){
       catch(err){resolve(e.target.result);}};
     img.onerror=function(){resolve(e.target.result);};img.src=e.target.result;};
   reader.onerror=function(){resolve(null);};reader.readAsDataURL(file);});}
-function pickPrefix(which){return which==='deliver'?'d':'p';}
 function onPick(which,input){var files=Array.prototype.slice.call(input.files||[]);input.value='';if(!files.length)return;
   toast(t().processing);
   Promise.all(files.map(compressImage)).then(function(uris){uris.forEach(function(u){if(u)pending[which].push(u);});renderPicks(which);});}
-function renderPicks(which){var box=document.getElementById(pickPrefix(which)+'-photopick');if(!box)return;box.innerHTML='';
+function renderPicks(which){var box=document.getElementById(PICK_PREFIX[which]+'-photopick');if(!box)return;box.innerHTML='';
   pending[which].forEach(function(u,i){var d=document.createElement('div');d.className='thumb';d.innerHTML='<img src="'+u+'" alt=""><button class="rm" onclick="removePick(\''+which+'\','+i+')">✕</button>';box.appendChild(d);});}
 function removePick(which,i){pending[which].splice(i,1);renderPicks(which);}
-function allPhotos(){var out=[];store.records.forEach(function(r){(r.photos||[]).forEach(function(p){out.push({p:p,when:r.datetime,who:r.person,cap:r.notes||r.location||''});});});
+function allPhotos(){var out=[];store.records.forEach(function(r){(r.photos||[]).forEach(function(p){out.push({p:p,when:r.datetime,who:r.person,cap:r.notes||r.location||r.item||''});});});
   out.sort(function(a,b){return new Date(b.when)-new Date(a.when);});return out;}
 function renderGallery(){var T=t();var ph=allPhotos();var g=document.getElementById('galleryGrid');
   if(!ph.length){g.className='';g.innerHTML='<div class="empty"><span class="big">📷</span>'+T.noPhotos+'</div>';return;}
@@ -555,17 +598,24 @@ function commit(rec,imgs,btn,clearFn,after){
   if(imgs&&imgs.length){toast(t().uploading);sync('busy');
     Backend.savePhotos(imgs).then(function(saved){finish(saved);}).catch(function(){finish([]);});}
   else finish([]);}
-function saveReceive(btn){var item=document.getElementById('r-item').value.trim();if(!item){toast(lang==='es'?'Escribe el artículo':'Enter an item');return;}
+function saveReceive(btn){var item=document.getElementById('r-item').value.trim();if(!item){toast(t().enterItem);return;}
   var rec={type:'receive',person:val('r-person'),category:selReceiveCat,item:item,qty:parseInt(val('r-qty'))||0,unit:val('r-unit'),source:document.getElementById('r-source').value.trim(),cats:[],notes:document.getElementById('r-notes').value.trim()};
-  commit(rec,[],btn,function(){document.getElementById('r-item').value='';document.getElementById('r-qty').value=1;document.getElementById('r-notes').value='';},function(){go('home');});}
+  var imgs=pending.receive.slice();pending.receive=[];renderPicks('receive');
+  commit(rec,imgs,btn,function(){document.getElementById('r-item').value='';document.getElementById('r-qty').value=1;document.getElementById('r-notes').value='';},function(){go('home');});}
 function saveCross(btn){var cats=CATS.filter(function(c){return selCrossCats[c];});
   var rec={type:'cross',person:val('c-person'),trip:parseInt(val('c-trip'))||1,cats:cats,load:document.getElementById('c-load').value.trim(),notes:document.getElementById('c-notes').value.trim()};
-  commit(rec,[],btn,function(){selCrossCats={};renderChips();document.getElementById('c-load').value='';document.getElementById('c-notes').value='';document.getElementById('c-trip').value=1;},function(){go('home');});}
+  var imgs=pending.cross.slice();pending.cross=[];renderPicks('cross');
+  commit(rec,imgs,btn,function(){selCrossCats={};renderChips();document.getElementById('c-load').value='';document.getElementById('c-notes').value='';document.getElementById('c-trip').value=1;},function(){go('home');});}
 function saveDistribute(btn){var pk=parseInt(val('d-packages'))||0,fam=parseInt(val('d-families'))||0;
-  if(pk===0&&fam===0){toast(lang==='es'?'Ingresa paquetes o familias':'Enter packages or families');return;}
-  var rec={type:'distribute',person:val('d-person'),packages:pk,location:document.getElementById('d-location').value.trim(),families:fam,cats:[],notes:document.getElementById('d-notes').value.trim()};
+  if(pk===0&&fam===0){toast(t().enterPkg);return;}
+  var rec={type:'distribute',person:val('d-person'),packages:pk,contents:document.getElementById('d-contents').value.trim(),location:document.getElementById('d-location').value.trim(),families:fam,cats:[],notes:document.getElementById('d-notes').value.trim()};
   var imgs=pending.deliver.slice();pending.deliver=[];renderPicks('deliver');
-  commit(rec,imgs,btn,function(){document.getElementById('d-packages').value=0;document.getElementById('d-families').value=0;document.getElementById('d-location').value='';document.getElementById('d-notes').value='';},function(){go('home');});}
+  commit(rec,imgs,btn,function(){document.getElementById('d-packages').value=0;document.getElementById('d-families').value=0;document.getElementById('d-contents').value='';document.getElementById('d-location').value='';document.getElementById('d-notes').value='';},function(){go('home');});}
+function savePurchase(btn){var what=document.getElementById('pu-item').value.trim();var amt=parseFloat(document.getElementById('pu-amount').value)||0;
+  if(!what&&amt===0){toast(t().enterPur);return;}
+  var rec={type:'purchase',person:val('pu-person'),item:what,amount:amt,cats:[],notes:document.getElementById('pu-notes').value.trim()};
+  var imgs=pending.purchase.slice();pending.purchase=[];renderPicks('purchase');
+  commit(rec,imgs,btn,function(){document.getElementById('pu-item').value='';document.getElementById('pu-amount').value='';document.getElementById('pu-notes').value='';},function(){go('home');});}
 function uploadPhotos(btn){if(!pending.photos.length){toast(t().addFirst);return;}
   var rec={type:'photo',person:val('p-person'),notes:document.getElementById('p-caption').value.trim(),location:'',cats:[]};
   var imgs=pending.photos.slice();pending.photos=[];renderPicks('photos');
@@ -573,21 +623,24 @@ function uploadPhotos(btn){if(!pending.photos.length){toast(t().addFirst);return
 function del(id){store.records=store.records.filter(function(x){return x.id!==id;});renderHome();renderReport();if(currentView==='photos')renderGallery();sync('busy');
   Backend.del(id).then(function(){sync('ok');toast(t().deleted);}).catch(function(){sync('off');});}
 function copyReport(){var txt=document.getElementById('reportBody').textContent;if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){toast(t().copied);}).catch(function(){toast(t().copied);});}else{toast(t().copied);}}
-function exportData(){var rows=[['id','type','datetime','person','category','item','qty','unit','source','trip','cats','load','packages','location','families','notes','photoCount']];
-  store.records.forEach(function(x){rows.push([x.id,x.type,x.datetime,x.person||'',x.category||'',x.item||'',x.qty||'',x.unit||'',x.source||'',x.trip||'',(x.cats||[]).join('|'),x.load||'',x.packages||'',x.location||'',x.families||'',(x.notes||'').replace(/\n/g,' '),(x.photos||[]).length]);});
+function exportData(){var rows=[['id','type','datetime','person','category','item','qty','unit','source','trip','cats','load','packages','contents','location','families','amount','notes','photoCount']];
+  store.records.forEach(function(x){rows.push([x.id,x.type,x.datetime,x.person||'',x.category||'',x.item||'',x.qty||'',x.unit||'',x.source||'',x.trip||'',(x.cats||[]).join('|'),x.load||'',x.packages||'',x.contents||'',x.location||'',x.families||'',x.amount||'',(x.notes||'').replace(/\n/g,' '),(x.photos||[]).length]);});
   var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
   var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='powerhouse-outreach.csv';a.click();URL.revokeObjectURL(url);}
 
 /* ===== Donation manifest (truthful packing list of donated goods) ===== */
 function manifestNo(){var d=new Date(),p=function(n){return ('0'+n).slice(-2);};return 'PM-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());}
+function unitOptions(sel){var us=t().units.slice();if(sel&&us.indexOf(sel)<0)us.unshift(sel);return us.map(function(u){return '<option'+(u===sel?' selected':'')+'>'+esc(u)+'</option>';}).join('');}
 function renderManifestLines(){var T=t();var box=document.getElementById('m-lines');
   if(!manifestLines.length){box.innerHTML='<div class="mlist-empty">'+T.mNoItems+'</div>';return;}
   box.innerHTML='';
   manifestLines.forEach(function(l,i){var d=document.createElement('div');d.className='mline';
-    d.innerHTML='<div style="font-size:14px;font-weight:600">'+esc(l.item)+'<div style="font-size:11px;color:var(--muted);font-weight:500">'+esc(T.cats[l.category]||l.category||'')+'</div></div>'
-      +'<div class="num" style="font-size:14px">'+nf(l.qty)+'</div><div style="font-size:13px;color:#475569">'+esc(l.unit||'')+'</div>'
+    d.innerHTML='<input value="'+escAttr(l.item)+'" oninput="manifestEdit('+i+',\'item\',this.value)" />'
+      +'<input type="number" inputmode="numeric" value="'+(Number(l.qty)||0)+'" oninput="manifestEdit('+i+',\'qty\',this.value)" />'
+      +'<select onchange="manifestEdit('+i+',\'unit\',this.value)">'+unitOptions(l.unit)+'</select>'
       +'<button class="rm" onclick="manifestRemove('+i+')">✕</button>';
     box.appendChild(d);});}
+function manifestEdit(i,field,v){if(!manifestLines[i])return;manifestLines[i][field]=(field==='qty')?(parseInt(v)||0):v;}
 function manifestRemove(i){manifestLines.splice(i,1);renderManifestLines();}
 function manifestAddLine(){var item=document.getElementById('m-newitem').value.trim();if(!item)return;
   manifestLines.push({item:item,qty:parseInt(document.getElementById('m-newqty').value)||0,unit:document.getElementById('m-newunit').value,category:'Other'});
@@ -638,7 +691,7 @@ function wire(){document.querySelectorAll('#nav button').forEach(function(b){b.o
   document.getElementById('settings').addEventListener('click',function(e){if(e.target.id==='settings')closeSettings();});}
 
 /* ===== Lang / Settings ===== */
-function toggleLang(){lang=lang==='en'?'es':'en';localStorage.setItem('ph_lang',lang);renderAll();if(currentView==='photos')renderGallery();}
+function toggleLang(){lang=lang==='en'?'es':'en';try{localStorage.setItem('ph_lang',lang);}catch(e){}renderAll();if(currentView==='photos')renderGallery();if(currentView==='manifest')renderManifestLines();}
 function openSettings(){document.getElementById('set-team-input').value=store.team.join('\n');document.getElementById('set-pastor-input').value=store.pastorEmail;document.getElementById('settings').classList.add('open');}
 function closeSettings(){document.getElementById('settings').classList.remove('open');}
 function saveSettingsUI(){var team=document.getElementById('set-team-input').value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
