@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base target="_top">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#1e3a8a" />
+<title>Powerhouse Outreach</title>
+<style>
+  :root{
+    --brand:#1e3a8a; --brand2:#3b82f6; --accent:#f59e0b;
+    --bg:#f1f5f9; --card:#ffffff; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --food:#16a34a; --medical:#dc2626; --clothing:#8b5cf6; --hygiene:#0891b2; --other:#64748b;
+    --ok:#16a34a; --shadow:0 1px 3px rgba(15,23,42,.08),0 8px 24px rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:84px;line-height:1.4;-webkit-font-smoothing:antialiased}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:14px 16px;padding-top:max(14px,env(safe-area-inset-top));position:sticky;top:0;z-index:20;box-shadow:0 2px 10px rgba(30,58,138,.25)}
+  .hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:560px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .logo{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:18px;flex:none}
+  .brand b{font-size:16px;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brand small{display:block;font-size:11px;opacity:.85;font-weight:500}
+  .hbtns{display:flex;gap:6px;align-items:center;flex:none}
+  .pill{background:rgba(255,255,255,.16);border:0;color:#fff;font-weight:700;font-size:12px;padding:7px 10px;border-radius:999px;cursor:pointer}
+  .pill:active{background:rgba(255,255,255,.3)}
+  .syncdot{width:9px;height:9px;border-radius:50%;background:#86efac;flex:none;transition:.3s}
+  .syncdot.busy{background:#fde047} .syncdot.off{background:#fca5a5}
+  main{padding:16px 14px 8px;max-width:560px;margin:0 auto}
+  .view{display:none;animation:fade .18s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  h2.title{font-size:20px;margin:2px 0 14px}
+  .sub{color:var(--muted);font-size:13px;margin:-8px 0 16px}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+  .card h3{margin:0 0 12px;font-size:15px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+  .stat{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px;position:relative;overflow:hidden}
+  .stat .n{font-size:26px;font-weight:800;line-height:1}
+  .stat .l{font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
+  .stat .ic{position:absolute;top:12px;right:12px;font-size:18px;opacity:.9}
+  .stat.food{border-top:3px solid var(--food)} .stat.cross{border-top:3px solid var(--brand2)}
+  .stat.pkg{border-top:3px solid var(--accent)} .stat.fam{border-top:3px solid var(--food)}
+  .seg{display:flex;background:#e8edf5;border-radius:12px;padding:4px;margin:0 0 14px;font-size:13px}
+  .seg button{flex:1;border:0;background:transparent;padding:8px 4px;border-radius:9px;font-weight:700;color:var(--muted);cursor:pointer}
+  .seg button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  label.f{display:block;font-size:13px;font-weight:700;margin:0 0 6px;color:#334155}
+  .field{margin-bottom:14px}
+  input,select,textarea{width:100%;font-size:16px;padding:13px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-family:inherit;appearance:none;-webkit-appearance:none}
+  textarea{min-height:64px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand2);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+  select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%2364748b' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;color:#334155}
+  .chip.on{border-color:transparent;color:#fff}
+  .chip[data-cat="Food"].on{background:var(--food)} .chip[data-cat="Medical"].on{background:var(--medical)}
+  .chip[data-cat="Clothing"].on{background:var(--clothing)} .chip[data-cat="Hygiene"].on{background:var(--hygiene)}
+  .chip[data-cat="Other"].on{background:var(--other)}
+  .stepper{display:flex;align-items:stretch;border:1.5px solid var(--line);border-radius:12px;overflow:hidden}
+  .stepper button{width:54px;border:0;background:#f1f5f9;font-size:24px;font-weight:700;color:var(--brand);cursor:pointer}
+  .stepper button:active{background:#e2e8f0}
+  .stepper input{border:0;border-radius:0;text-align:center;font-size:20px;font-weight:800}
+  .btn{width:100%;border:0;border-radius:14px;padding:16px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));cursor:pointer;box-shadow:0 6px 16px rgba(37,99,235,.3)}
+  .btn:active{transform:translateY(1px)} .btn[disabled]{opacity:.6}
+  .btn.amber{background:linear-gradient(135deg,#d97706,var(--accent));box-shadow:0 6px 16px rgba(245,158,11,.3)}
+  .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--line);box-shadow:none}
+  .addphoto{width:100%;border:1.5px dashed var(--brand2);background:#eff6ff;color:var(--brand);border-radius:12px;padding:13px;font-weight:700;font-size:15px;cursor:pointer}
+  .addphoto:active{background:#dbeafe}
+  .photopick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .photopick:empty{display:none}
+  .thumb{position:relative;width:72px;height:72px;border-radius:10px;overflow:hidden;background:#e2e8f0;flex:none}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumb .rm{position:absolute;top:2px;right:2px;width:20px;height:20px;border:0;border-radius:50%;background:rgba(15,23,42,.7);color:#fff;font-size:12px;line-height:20px;text-align:center;cursor:pointer;padding:0}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .gcell{position:relative;padding-top:100%;border-radius:10px;overflow:hidden;background:#e2e8f0;cursor:pointer}
+  .gcell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .gcell .cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-size:10px;padding:12px 4px 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .act{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .act:last-child{border-bottom:0}
+  .act .dot{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px;flex:none}
+  .dot.receive{background:#dcfce7} .dot.cross{background:#dbeafe} .dot.distribute{background:#fef3c7} .dot.photo{background:#e0e7ff}
+  .act .m{flex:1;min-width:0}
+  .act .m b{font-size:14px;display:block} .act .m span{font-size:12px;color:var(--muted)}
+  .act .del{border:0;background:transparent;color:#cbd5e1;font-size:20px;cursor:pointer;padding:0 4px}
+  .photobadge{display:inline-block;background:#e0e7ff;color:var(--brand);font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;margin-left:6px}
+  .empty{text-align:center;color:var(--muted);padding:24px 8px;font-size:14px}
+  .empty .big{font-size:34px;display:block;margin-bottom:6px}
+  pre.report{white-space:pre-wrap;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:13.5px;line-height:1.55;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:16px;margin:0 0 12px;color:#1e293b}
+  .recip{font-size:13px;color:var(--muted);margin:0 0 10px} .recip b{color:var(--ink)}
+  nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(15,23,42,.06)}
+  nav button{flex:1;max-width:112px;border:0;background:transparent;padding:9px 1px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:10px;font-weight:700}
+  nav button .ni{font-size:20px;line-height:1}
+  nav button.on{color:var(--brand)} nav button.on .ni{transform:translateY(-1px)}
+  #toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:13px 20px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .modal{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:60;display:none;align-items:flex-end}
+  .modal.open{display:flex}
+  .sheet{background:#fff;width:100%;max-width:560px;margin:0 auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+  .sheet h3{margin:2px 0 4px;font-size:17px}
+  .sheet .x{float:right;border:0;background:#f1f5f9;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer}
+  .note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:11px 12px;font-size:12.5px;color:#1e40af;margin-bottom:14px}
+  #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:70;display:none;flex-direction:column;align-items:center;justify-content:center;padding:16px}
+  #lightbox.open{display:flex}
+  #lightbox img{max-width:100%;max-height:80%;border-radius:10px}
+  #lightbox .lbcap{color:#fff;margin-top:12px;font-size:14px;text-align:center;max-width:90%}
+  #lightbox .lbx{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;font-size:20px;cursor:pointer}
+  #boot{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:80;color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+<div id="boot">Loading…</div>
+<header>
+  <div class="hrow">
+    <div class="brand">
+      <div class="logo">⚡</div>
+      <div><b id="appName">Powerhouse Outreach</b><small id="appTag">Brownsville → Matamoros</small></div>
+    </div>
+    <div class="hbtns">
+      <span class="syncdot" id="syncDot" title="sync"></span>
+      <button class="pill" id="langBtn" onclick="toggleLang()">ES</button>
+      <button class="pill" onclick="openSettings()">⚙︎</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="view active" id="v-home">
+    <div class="seg" id="rangeSeg">
+      <button data-range="today" class="on">Today</button>
+      <button data-range="week">This Week</button>
+      <button data-range="month">This Month</button>
+    </div>
+    <div class="stats">
+      <div class="stat food"><div class="ic">📦</div><div class="n" id="s-received">0</div><div class="l" id="l-received">Items received</div></div>
+      <div class="stat cross"><div class="ic">🚗</div><div class="n" id="s-trips">0</div><div class="l" id="l-trips">Border crossings</div></div>
+      <div class="stat pkg"><div class="ic">🎁</div><div class="n" id="s-packages">0</div><div class="l" id="l-packages">Packages made</div></div>
+      <div class="stat fam"><div class="ic">🤝</div><div class="n" id="s-families">0</div><div class="l" id="l-families">Families served</div></div>
+    </div>
+    <div class="card"><h3 id="h-recent">Recent activity</h3><div id="recentList"></div></div>
+  </section>
+
+  <section class="view" id="v-receive">
+    <h2 class="title" id="t-receive">📦 Receive goods</h2>
+    <div class="sub" id="sub-receive">Log what arrived at the Brownsville warehouse</div>
+    <div class="card">
+      <div class="field"><label class="f" id="lf-who">Who is logging?</label><select id="r-person"></select></div>
+      <div class="field"><label class="f" id="lf-cat">Category</label><div class="chips" id="r-cats"></div></div>
+      <div class="field"><label class="f" id="lf-item">Item description</label><input id="r-item" placeholder="e.g. Canned beans" /></div>
+      <div class="row2">
+        <div class="field"><label class="f" id="lf-qty">Quantity</label>
+          <div class="stepper"><button type="button" onclick="bump('r-qty',-1)">−</button><input id="r-qty" type="number" inputmode="numeric" value="1" min="0" /><button type="button" onclick="bump('r-qty',1)">+</button></div></div>
+        <div class="field"><label class="f" id="lf-unit">Unit</label><select id="r-unit"></select></div>
+      </div>
+      <div class="field"><label class="f" id="lf-src">Source</label><input id="r-source" value="Powerhouse Church (Katy)" /></div>
+      <div class="field"><label class="f" id="lf-notes1">Notes (optional)</label><textarea id="r-notes"></textarea></div>
+      <button class="btn" onclick="saveReceive(this)" id="b-receive">Save to inventory</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-cross">
+    <h2 class="title" id="t-cross">🚗 Cross the border</h2>
+    <div class="sub" id="sub-cross">Log a trip carrying goods to Matamoros</div>
+    <div class="card">
+      <div class="row2">
+        <div class="field"><label class="f" id="lf-driver">Driver</label><select id="c-person"></select></div>
+        <div class="field"><label class="f" id="lf-trip">Trip # today</label>
+          <div class="stepper"><button type="button" onclick="bump('c-trip',-1)">−</button><input id="c-trip" type="number" inputmode="numeric" value="1" min="1" /><button type="button" onclick="bump('c-trip',1)">+</button></div></div>
+      </div>
+      <div class="field"><label class="f" id="lf-carry">What's in the car?</label><div class="chips" id="c-cats"></div></div>
+      <div class="field"><label class="f" id="lf-load">Load description</label><input id="c-load" placeholder="e.g. Trunk + back seat full of food boxes" /></div>
+      <div class="field"><label class="f" id="lf-notes2">Notes (optional)</label><textarea id="c-notes"></textarea></div>
+      <button class="btn" onclick="saveCross(this)" id="b-cross">Log crossing</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-distribute">
+    <h2 class="title" id="t-dist">🎁 Packages &amp; outreach</h2>
+    <div class="sub" id="sub-dist">Log packages made and where they were delivered</div>
+    <div class="card">
+      <div class="field"><label class="f" id="lf-who2">Who is logging?</label><select id="d-person"></select></div>
+      <div class="field"><label class="f" id="lf-pkg">Packages made</label>
+        <div class="stepper"><button type="button" onclick="bump('d-packages',-10)">−</button><input id="d-packages" type="number" inputmode="numeric" value="0" min="0" /><button type="button" onclick="bump('d-packages',10)">+</button></div></div>
+      <div class="field"><label class="f" id="lf-loc">Delivered to (area / outreach)</label><input id="d-location" placeholder="e.g. Colonia / neighborhood name" /></div>
+      <div class="field"><label class="f" id="lf-served">Families served</label>
+        <div class="stepper"><button type="button" onclick="bump('d-families',-5)">−</button><input id="d-families" type="number" inputmode="numeric" value="0" min="0" /><button type="button" onclick="bump('d-families',5)">+</button></div></div>
+      <div class="field"><label class="f" id="lf-notes3">Notes (optional)</label><textarea id="d-notes"></textarea></div>
+      <div class="field"><label class="f" id="lf-dphoto">📷 Add photos (optional)</label>
+        <div class="photopick" id="d-photopick"></div>
+        <input type="file" id="d-photoinput" accept="image/*" multiple style="display:none" onchange="onPick('deliver',this)" />
+        <button type="button" class="addphoto" id="d-addphoto" onclick="document.getElementById('d-photoinput').click()">➕ Add photos</button>
+      </div>
+      <button class="btn amber" onclick="saveDistribute(this)" id="b-dist">Save packages</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-photos">
+    <h2 class="title" id="t-photos">📷 Photos</h2>
+    <div class="sub" id="sub-photos">Add photos of deliveries, packing, and outreach</div>
+    <div class="card">
+      <div class="field"><label class="f" id="lf-pwho">Who is uploading?</label><select id="p-person"></select></div>
+      <div class="field"><label class="f" id="lf-pcap">Caption (optional)</label><input id="p-caption" placeholder="e.g. Delivery at Colonia Esperanza" /></div>
+      <div class="photopick" id="p-photopick"></div>
+      <input type="file" id="p-photoinput" accept="image/*" multiple style="display:none" onchange="onPick('photos',this)" />
+      <button type="button" class="addphoto" id="p-addphoto" onclick="document.getElementById('p-photoinput').click()">➕ Add photos</button>
+      <div style="height:12px"></div>
+      <button class="btn amber" onclick="uploadPhotos(this)" id="b-photos">Upload photos</button>
+    </div>
+    <div class="card"><h3 id="h-gallery">Gallery</h3><div id="galleryGrid"></div></div>
+  </section>
+
+  <section class="view" id="v-reports">
+    <h2 class="title" id="t-rep">📊 Reports for Pastor Robert</h2>
+    <div class="sub" id="sub-rep">Preview the summary that is emailed automatically</div>
+    <div class="seg" id="repSeg">
+      <button data-rep="daily" class="on">Daily</button>
+      <button data-rep="weekly">Weekly (Fri)</button>
+      <button data-rep="monthly">Last Month</button>
+    </div>
+    <p class="recip" id="recipLine"></p>
+    <pre class="report" id="reportBody"></pre>
+    <button class="btn ghost" id="b-copy" onclick="copyReport()">Copy report text</button>
+    <div style="height:10px"></div>
+    <button class="btn ghost" id="b-export" onclick="exportData()">⬇︎ Export all data (CSV)</button>
+  </section>
+</main>
+
+<nav id="nav">
+  <button data-go="home" class="on"><span class="ni">🏠</span><span id="n-home">Home</span></button>
+  <button data-go="receive"><span class="ni">📦</span><span id="n-receive">Receive</span></button>
+  <button data-go="cross"><span class="ni">🚗</span><span id="n-cross">Cross</span></button>
+  <button data-go="distribute"><span class="ni">🎁</span><span id="n-dist">Deliver</span></button>
+  <button data-go="photos"><span class="ni">📷</span><span id="n-photos">Photos</span></button>
+  <button data-go="reports"><span class="ni">📊</span><span id="n-rep">Reports</span></button>
+</nav>
+
+<div id="toast"></div>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <button class="lbx" onclick="closeLightbox()">✕</button>
+  <img id="lbimg" src="" alt="" />
+  <div class="lbcap" id="lbcap"></div>
+</div>
+
+<div class="modal" id="settings">
+  <div class="sheet">
+    <button class="x" onclick="closeSettings()">✕</button>
+    <h3 id="set-title">Settings</h3>
+    <div class="note" id="set-note"></div>
+    <div class="field"><label class="f" id="set-team">Team members (one per line)</label><textarea id="set-team-input" style="min-height:96px"></textarea></div>
+    <div class="field"><label class="f" id="set-pastor">Pastor Robert's email</label><input id="set-pastor-input" type="email" placeholder="pastor.robert@example.com" /></div>
+    <button class="btn" onclick="saveSettingsUI()" id="set-save">Save settings</button>
+  </div>
+</div>
+
+<script>
+/* ===== Backend adapter: Google Sheet/Drive when deployed, localStorage when previewed ===== */
+var hasGS = (typeof google !== 'undefined' && google.script && google.script.run);
+function gs(fn){
+  var args = Array.prototype.slice.call(arguments,1);
+  return new Promise(function(res,rej){
+    var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej);
+    r[fn].apply(r,args);
+  });
+}
+var Backend = {
+  load:function(){ return hasGS ? gs('loadData') : Promise.resolve(localLoad()); },
+  add:function(rec){ return hasGS ? gs('addRecord',rec) : Promise.resolve(localAdd(rec)); },
+  del:function(id){ return hasGS ? gs('deleteRecord',id) : Promise.resolve(localDel(id)); },
+  saveSettings:function(o){ return hasGS ? gs('saveSettings',o) : Promise.resolve(localSaveSettings(o)); },
+  savePhotos:function(uris){ return hasGS ? gs('savePhotos',uris) : Promise.resolve(uris.map(function(u){return {data:u};})); }
+};
+/* localStorage fallback (preview / demo only) */
+function localStore(){ return JSON.parse(localStorage.getItem('pho_local')||'null'); }
+function localLoad(){
+  var s = localStore();
+  if(!s){ s={orgName:'Powerhouse Outreach',route:'Brownsville → Matamoros',team:['Ana','Sofía','Luis','Diego'],pastorEmail:'pastor.robert@example.com',emailLang:'en',records:sampleRecords()}; localStorage.setItem('pho_local',JSON.stringify(s)); }
+  return s;
+}
+function localPersist(){ try{ localStorage.setItem('pho_local', JSON.stringify(store)); }catch(e){} }
+function localAdd(rec){ rec.id='r'+Date.now()+Math.floor(Math.random()*1000); rec.datetime=new Date().toISOString(); localPersist(); return rec; } /* caller already added rec optimistically */
+function localDel(id){ store.records=store.records.filter(function(r){return r.id!==id;}); localPersist(); return true; }
+function localSaveSettings(o){ if(o.team&&o.team.length)store.team=o.team; if(o.pastorEmail)store.pastorEmail=o.pastorEmail; localPersist(); return {team:store.team,pastorEmail:store.pastorEmail,emailLang:store.emailLang}; }
+function iso(d,h,m){ var x=new Date(); x.setDate(x.getDate()-d); x.setHours(h||10,m||0,0,0); return x.toISOString(); }
+function lastMonthIso(){ var x=new Date(); x.setDate(1); x.setHours(10,0,0,0); x.setMonth(x.getMonth()-1); x.setDate(15); return x.toISOString(); }
+function sampleRecords(){ return [
+  {id:'a1',type:'receive',datetime:iso(0,8,15),person:'Ana',category:'Food',item:'Rice 50lb bags',qty:24,unit:'bags',source:'Powerhouse Church (Katy)',cats:[],photos:[],notes:''},
+  {id:'a2',type:'receive',datetime:iso(0,8,40),person:'Luis',category:'Hygiene',item:'Bar soap',qty:18,unit:'boxes',source:'Powerhouse Church (Katy)',cats:[],photos:[],notes:''},
+  {id:'a3',type:'receive',datetime:iso(0,9,5),person:'Sofía',category:'Medical',item:'First-aid kits',qty:6,unit:'cases',source:'Powerhouse Church (Katy)',cats:[],photos:[],notes:''},
+  {id:'a4',type:'cross',datetime:iso(0,10,0),person:'Diego',trip:1,cats:['Food','Hygiene'],load:'Trunk + back seat full',photos:[],notes:''},
+  {id:'a5',type:'cross',datetime:iso(0,11,30),person:'Ana',trip:1,cats:['Food','Clothing'],load:'Boxes to the window',photos:[],notes:''},
+  {id:'a6',type:'cross',datetime:iso(0,12,15),person:'Diego',trip:2,cats:['Medical','Hygiene'],load:'Back seat + trunk',photos:[],notes:''},
+  {id:'a7',type:'cross',datetime:iso(0,14,0),person:'Luis',trip:1,cats:['Food'],load:'Full load of rice + beans',photos:[],notes:''},
+  {id:'a8',type:'distribute',datetime:iso(0,16,0),person:'Sofía',packages:1040,location:'Colonia Esperanza',families:1040,cats:[],photos:[],notes:'Big packing day'},
+  {id:'b1',type:'receive',datetime:iso(1,9,0),person:'Ana',category:'Clothing',item:'Winter coats',qty:8,unit:'boxes',source:'Powerhouse Church (Katy)',cats:[],photos:[],notes:''},
+  {id:'b2',type:'cross',datetime:iso(1,11,0),person:'Diego',trip:1,cats:['Clothing','Food'],load:'Full car',photos:[],notes:''},
+  {id:'b4',type:'distribute',datetime:iso(1,15,30),person:'Luis',packages:320,location:'Colonia Las Flores',families:300,cats:[],photos:[],notes:''},
+  {id:'c2',type:'cross',datetime:iso(3,11,0),person:'Luis',trip:1,cats:['Food'],load:'Full',photos:[],notes:''},
+  {id:'c3',type:'distribute',datetime:iso(3,15,0),person:'Diego',packages:280,location:'Centro Matamoros',families:265,cats:[],photos:[],notes:''},
+  {id:'lm1',type:'distribute',datetime:lastMonthIso(),person:'Ana',packages:2450,location:'Colonia Buenavista',families:2300,cats:[],photos:[],notes:'Last month outreach'}
+]; }
+
+/* ===== i18n ===== */
+var I18N={
+  en:{appName:"Powerhouse Outreach",appTag:"Brownsville → Matamoros",lang:"ES",today:"Today",week:"This Week",month:"This Month",
+    received:"Items received",trips:"Border crossings",packages:"Packages made",families:"Families served",
+    recent:"Recent activity",noActivity:"No activity yet. Use the buttons below to start logging.",
+    nHome:"Home",nReceive:"Receive",nCross:"Cross",nDist:"Deliver",nPhotos:"Photos",nRep:"Reports",
+    tReceive:"📦 Receive goods",subReceive:"Log what arrived at the Brownsville warehouse",
+    who:"Who is logging?",cat:"Category",item:"Item description",qty:"Quantity",unit:"Unit",src:"Source",notes:"Notes (optional)",bReceive:"Save to inventory",
+    tCross:"🚗 Cross the border",subCross:"Log a trip carrying goods to Matamoros",driver:"Driver",trip:"Trip # today",carry:"What's in the car?",load:"Load description",bCross:"Log crossing",
+    tDist:"🎁 Packages & outreach",subDist:"Log packages made and where they were delivered",pkg:"Packages made",loc:"Delivered to (area / outreach)",served:"Families served",bDist:"Save packages",dphoto:"📷 Add photos (optional)",
+    tPhotos:"📷 Photos",subPhotos:"Add photos of deliveries, packing, and outreach",pwho:"Who is uploading?",caption:"Caption (optional)",addPhotos:"➕ Add photos",uploadPhotos:"Upload photos",gallery:"Gallery",noPhotos:"No photos yet. Tap “Add photos” to upload.",
+    tRep:"📊 Reports for Pastor Robert",subRep:"Preview the summary that is emailed automatically",daily:"Daily",weekly:"Weekly (Fri)",monthly:"Last Month",copy:"Copy report text",exportd:"⬇︎ Export all data (CSV)",
+    setTitle:"Settings",team:"Team members (one per line)",pastor:"Pastor Robert's email",setSave:"Save settings",
+    setNote:"Changes here sync to everyone's app and to the automatic emails.",
+    saved:"Saved",saving:"Saving…",deleted:"Entry removed",copied:"Copied",settingsSaved:"Settings saved",offline:"Saved on phone (will sync)",
+    processing:"Processing photos…",uploading:"Uploading photos…",addFirst:"Add photos first",photosSaved:"Photos uploaded",photoEntry:"Photos",
+    cats:{Food:"Food",Medical:"Medical",Clothing:"Clothing",Hygiene:"Soap & Hygiene",Other:"Other"},units:["boxes","bags","items","cases","lbs","pallets"],
+    recTo:"Emailed automatically to",subj:{daily:"Daily Outreach Update",weekly:"Weekly Outreach Summary",monthly:"Monthly Outreach Summary"},
+    rGoods:"GOODS RECEIVED (Brownsville warehouse)",rCross:"BORDER CROSSINGS",rAreas:"Areas reached",rItems:"items received",rTrips:"crossings",rPkg:"packages made",rFam:"families served",rPhotos:"photos added",
+    rNothing:"No activity logged for this period.",rThanks:"In His service,\nThe Brownsville outreach team",rGreeting:"Pastor Robert,",
+    rIntro:{daily:"Here is today's outreach activity:",weekly:"Here is this week's outreach summary:",monthly:"Here is last month's outreach summary:"}},
+  es:{appName:"Alcance Powerhouse",appTag:"Brownsville → Matamoros",lang:"EN",today:"Hoy",week:"Esta semana",month:"Este mes",
+    received:"Artículos recibidos",trips:"Cruces de frontera",packages:"Paquetes armados",families:"Familias servidas",
+    recent:"Actividad reciente",noActivity:"Sin actividad aún. Usa los botones de abajo para registrar.",
+    nHome:"Inicio",nReceive:"Recibir",nCross:"Cruzar",nDist:"Entregar",nPhotos:"Fotos",nRep:"Reportes",
+    tReceive:"📦 Recibir mercancía",subReceive:"Registra lo que llegó a la bodega de Brownsville",
+    who:"¿Quién registra?",cat:"Categoría",item:"Descripción del artículo",qty:"Cantidad",unit:"Unidad",src:"Origen",notes:"Notas (opcional)",bReceive:"Guardar en inventario",
+    tCross:"🚗 Cruzar la frontera",subCross:"Registra un viaje llevando mercancía a Matamoros",driver:"Conductor",trip:"Viaje # hoy",carry:"¿Qué lleva el carro?",load:"Descripción de la carga",bCross:"Registrar cruce",
+    tDist:"🎁 Paquetes y alcance",subDist:"Registra paquetes armados y dónde se entregaron",pkg:"Paquetes armados",loc:"Entregado en (zona / alcance)",served:"Familias servidas",bDist:"Guardar paquetes",dphoto:"📷 Agregar fotos (opcional)",
+    tPhotos:"📷 Fotos",subPhotos:"Agrega fotos de entregas, empaque y alcance",pwho:"¿Quién sube las fotos?",caption:"Descripción (opcional)",addPhotos:"➕ Agregar fotos",uploadPhotos:"Subir fotos",gallery:"Galería",noPhotos:"Sin fotos aún. Toca “Agregar fotos” para subir.",
+    tRep:"📊 Reportes para Pastor Robert",subRep:"Vista previa del resumen que se envía por correo automáticamente",daily:"Diario",weekly:"Semanal (vie)",monthly:"Mes pasado",copy:"Copiar texto del reporte",exportd:"⬇︎ Exportar datos (CSV)",
+    setTitle:"Ajustes",team:"Miembros del equipo (uno por línea)",pastor:"Correo del Pastor Robert",setSave:"Guardar ajustes",
+    setNote:"Los cambios aquí se sincronizan con la app de todos y con los correos automáticos.",
+    saved:"Guardado",saving:"Guardando…",deleted:"Registro eliminado",copied:"Copiado",settingsSaved:"Ajustes guardados",offline:"Guardado en el teléfono (se sincronizará)",
+    processing:"Procesando fotos…",uploading:"Subiendo fotos…",addFirst:"Agrega fotos primero",photosSaved:"Fotos subidas",photoEntry:"Fotos",
+    cats:{Food:"Comida",Medical:"Médico",Clothing:"Ropa",Hygiene:"Jabón e higiene",Other:"Otro"},units:["cajas","bolsas","piezas","cajas grandes","libras","tarimas"],
+    recTo:"Se envía por correo automáticamente a",subj:{daily:"Actualización diaria",weekly:"Resumen semanal",monthly:"Resumen mensual"},
+    rGoods:"MERCANCÍA RECIBIDA (bodega de Brownsville)",rCross:"CRUCES DE FRONTERA",rAreas:"Zonas alcanzadas",rItems:"artículos recibidos",rTrips:"cruces",rPkg:"paquetes armados",rFam:"familias servidas",rPhotos:"fotos agregadas",
+    rNothing:"No se registró actividad en este período.",rThanks:"A su servicio,\nEl equipo de alcance de Brownsville",rGreeting:"Pastor Robert,",
+    rIntro:{daily:"Esta es la actividad de alcance de hoy:",weekly:"Este es el resumen de alcance de esta semana:",monthly:"Este es el resumen de alcance del mes pasado:"}}
+};
+var CATS=["Food","Medical","Clothing","Hygiene","Other"];
+
+/* ===== State ===== */
+var lang = localStorage.getItem('ph_lang') || 'en';
+var store = {orgName:'Powerhouse Outreach',route:'Brownsville → Matamoros',team:['Ana','Sofía','Luis','Diego'],pastorEmail:'',emailLang:'en',records:[]};
+var range='today', repKind='daily', selReceiveCat='Food', selCrossCats={}, currentView='home';
+var pending={deliver:[],photos:[]};
+function t(){ return I18N[lang]; }
+
+/* ===== Date helpers ===== */
+function startOfToday(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function startOfWeek(){var d=startOfToday();var day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d;}
+function monthBounds(prev){var d=startOfToday();d.setDate(1);if(prev)d.setMonth(d.getMonth()-1);var end=new Date(d);end.setMonth(end.getMonth()+1);return [d,end];}
+function inRange(ts,r){var d=new Date(ts);
+  if(r==='today')return d>=startOfToday();
+  if(r==='week')return d>=startOfWeek();
+  if(r==='month'){var mb=monthBounds(false);return d>=mb[0]&&d<mb[1];}
+  if(r==='lastmonth'){var lb=monthBounds(true);return d>=lb[0]&&d<lb[1];}
+  return true;}
+function fmtTime(ts){return new Date(ts).toLocaleString(lang==='es'?'es-MX':'en-US',{weekday:'short',hour:'numeric',minute:'2-digit'});}
+function nf(n){return (Number(n)||0).toLocaleString();}
+
+/* ===== Aggregate ===== */
+function agg(r){var recs=store.records.filter(function(x){return inRange(x.datetime,r);});
+  var items=0,trips=0,packages=0,families=0,photos=0,areas={},byCat={};
+  recs.forEach(function(x){
+    if(x.photos&&x.photos.length)photos+=x.photos.length;
+    if(x.type==='receive'){items+=Number(x.qty)||0;byCat[x.category]=(byCat[x.category]||0)+(Number(x.qty)||0);}
+    if(x.type==='cross'){trips++;}
+    if(x.type==='distribute'){packages+=Number(x.packages)||0;families+=Number(x.families)||0;if(x.location)areas[x.location]=1;}
+  });
+  return {items:items,trips:trips,packages:packages,families:families,photos:photos,areas:Object.keys(areas),byCat:byCat,recs:recs};}
+
+/* ===== Render ===== */
+function setTxt(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+function applyText(){var T=t();document.documentElement.lang=lang;
+  setTxt('appName',store.orgName||T.appName);setTxt('appTag',store.route||T.appTag);setTxt('langBtn',T.lang);
+  var sg=document.querySelectorAll('#rangeSeg button');sg[0].textContent=T.today;sg[1].textContent=T.week;sg[2].textContent=T.month;
+  setTxt('l-received',T.received);setTxt('l-trips',T.trips);setTxt('l-packages',T.packages);setTxt('l-families',T.families);setTxt('h-recent',T.recent);
+  setTxt('n-home',T.nHome);setTxt('n-receive',T.nReceive);setTxt('n-cross',T.nCross);setTxt('n-dist',T.nDist);setTxt('n-photos',T.nPhotos);setTxt('n-rep',T.nRep);
+  setTxt('t-receive',T.tReceive);setTxt('sub-receive',T.subReceive);setTxt('lf-who',T.who);setTxt('lf-cat',T.cat);setTxt('lf-item',T.item);setTxt('lf-qty',T.qty);setTxt('lf-unit',T.unit);setTxt('lf-src',T.src);setTxt('lf-notes1',T.notes);setTxt('b-receive',T.bReceive);
+  setTxt('t-cross',T.tCross);setTxt('sub-cross',T.subCross);setTxt('lf-driver',T.driver);setTxt('lf-trip',T.trip);setTxt('lf-carry',T.carry);setTxt('lf-load',T.load);setTxt('lf-notes2',T.notes);setTxt('b-cross',T.bCross);
+  setTxt('t-dist',T.tDist);setTxt('sub-dist',T.subDist);setTxt('lf-who2',T.who);setTxt('lf-pkg',T.pkg);setTxt('lf-loc',T.loc);setTxt('lf-served',T.served);setTxt('lf-notes3',T.notes);setTxt('lf-dphoto',T.dphoto);setTxt('d-addphoto',T.addPhotos);setTxt('b-dist',T.bDist);
+  setTxt('t-photos',T.tPhotos);setTxt('sub-photos',T.subPhotos);setTxt('lf-pwho',T.pwho);setTxt('lf-pcap',T.caption);setTxt('p-addphoto',T.addPhotos);setTxt('b-photos',T.uploadPhotos);setTxt('h-gallery',T.gallery);
+  setTxt('t-rep',T.tRep);setTxt('sub-rep',T.subRep);var rs=document.querySelectorAll('#repSeg button');rs[0].textContent=T.daily;rs[1].textContent=T.weekly;rs[2].textContent=T.monthly;setTxt('b-copy',T.copy);setTxt('b-export',T.exportd);
+  setTxt('set-title',T.setTitle);setTxt('set-team',T.team);setTxt('set-pastor',T.pastor);setTxt('set-save',T.setSave);setTxt('set-note',T.setNote);}
+function renderChips(){var T=t();var rc=document.getElementById('r-cats');rc.innerHTML='';
+  CATS.forEach(function(c){var b=document.createElement('button');b.className='chip'+(c===selReceiveCat?' on':'');b.dataset.cat=c;b.type='button';b.textContent=T.cats[c];b.onclick=function(){selReceiveCat=c;renderChips();};rc.appendChild(b);});
+  var cc=document.getElementById('c-cats');cc.innerHTML='';
+  CATS.forEach(function(c){var b=document.createElement('button');b.className='chip'+(selCrossCats[c]?' on':'');b.dataset.cat=c;b.type='button';b.textContent=T.cats[c];b.onclick=function(){selCrossCats[c]=!selCrossCats[c];renderChips();};cc.appendChild(b);});}
+function renderPeople(){['r-person','c-person','d-person','p-person'].forEach(function(id){var sel=document.getElementById(id);if(!sel)return;var cur=sel.value;sel.innerHTML='';store.team.forEach(function(n){var o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);});if(store.team.indexOf(cur)>=0)sel.value=cur;});
+  var us=document.getElementById('r-unit');us.innerHTML='';t().units.forEach(function(u){var o=document.createElement('option');o.value=u;o.textContent=u;us.appendChild(o);});}
+function renderHome(){var T=t();var a=agg(range);
+  setTxt('s-received',nf(a.items));setTxt('s-trips',nf(a.trips));setTxt('s-packages',nf(a.packages));setTxt('s-families',nf(a.families));
+  var list=document.getElementById('recentList');
+  var recent=store.records.slice().sort(function(x,y){return new Date(y.datetime)-new Date(x.datetime);}).slice(0,12);
+  if(!recent.length){list.innerHTML='<div class="empty"><span class="big">🕊️</span>'+T.noActivity+'</div>';return;}
+  list.innerHTML='';
+  recent.forEach(function(x){var div=document.createElement('div');div.className='act';var icon='📦',title='',sub=fmtTime(x.datetime)+' · '+x.person;
+    if(x.type==='receive'){icon='📦';title=(T.cats[x.category]||x.category)+': '+x.item+' ×'+x.qty+' '+(x.unit||'');}
+    if(x.type==='cross'){icon='🚗';var cs=(x.cats||[]).map(function(c){return T.cats[c]||c;}).join(', ');title=(lang==='es'?'Cruce':'Crossing')+' #'+x.trip+(cs?' — '+cs:'');}
+    if(x.type==='distribute'){icon='🎁';title=nf(x.packages)+' '+T.rPkg.split(' ')[0]+' → '+(x.location||'—');}
+    if(x.type==='photo'){icon='📷';title=x.notes||T.photoEntry;}
+    var badge=(x.photos&&x.photos.length)?' <span class="photobadge">📷 '+x.photos.length+'</span>':'';
+    div.innerHTML='<div class="dot '+x.type+'">'+icon+'</div><div class="m"><b>'+esc(title)+badge+'</b><span>'+esc(sub)+'</span></div><button class="del" onclick="del(\''+x.id+'\')">🗑</button>';
+    list.appendChild(div);});}
+function renderReport(){var T=t();var map={daily:'today',weekly:'week',monthly:'lastmonth'};var a=agg(map[repKind]);
+  document.getElementById('recipLine').innerHTML=T.recTo+' <b>'+esc(store.pastorEmail||'—')+'</b> · '+T.subj[repKind];
+  var now=new Date();var dateStr=now.toLocaleDateString(lang==='es'?'es-MX':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var b=T.rGreeting+'\n\n'+T.rIntro[repKind]+'\n────────────────────\n📅 '+dateStr+'\n────────────────────\n\n';
+  b+='📦 '+nf(a.items)+' '+T.rItems+'\n🚗 '+nf(a.trips)+' '+T.rTrips+'\n🎁 '+nf(a.packages)+' '+T.rPkg+'\n🤝 '+nf(a.families)+' '+T.rFam+'\n';
+  if(a.photos)b+='📷 '+nf(a.photos)+' '+T.rPhotos+'\n';
+  b+='\n';
+  if(!a.recs.length){b+=T.rNothing+'\n';}else{var cats=Object.keys(a.byCat);
+    if(cats.length){b+=T.rGoods+'\n';cats.forEach(function(c){b+='  • '+(T.cats[c]||c)+': '+nf(a.byCat[c])+'\n';});b+='\n';}
+    if(a.trips){b+=T.rCross+': '+a.trips+'\n\n';}
+    if(a.areas.length){b+=T.rAreas+': '+a.areas.join(', ')+'\n\n';}}
+  b+='────────────────────\n'+T.rThanks;
+  document.getElementById('reportBody').textContent=b;}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function renderAll(){applyText();renderChips();renderPeople();renderHome();renderReport();}
+
+/* ===== Photos ===== */
+function photoThumb(p){return p.data?p.data:'https://drive.google.com/thumbnail?id='+p.id+'&sz=w600';}
+function photoFull(p){return p.data?p.data:'https://drive.google.com/thumbnail?id='+p.id+'&sz=w1600';}
+function imgFallback(img){var id=img.getAttribute('data-id');if(!id||img.dataset.fb)return;img.dataset.fb='1';
+  if(hasGS){gs('getPhotoData',id).then(function(d){img.src=d;}).catch(function(){});}}
+function compressImage(file){return new Promise(function(resolve){
+  if(!file||!/^image\//.test(file.type)){resolve(null);return;}
+  var reader=new FileReader();
+  reader.onload=function(e){var img=new Image();
+    img.onload=function(){var max=1280,w=img.width,h=img.height;
+      if(w>h){if(w>max){h=Math.round(h*max/w);w=max;}}else{if(h>max){w=Math.round(w*max/h);h=max;}}
+      try{var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',0.7));}
+      catch(err){resolve(e.target.result);}};
+    img.onerror=function(){resolve(e.target.result);};img.src=e.target.result;};
+  reader.onerror=function(){resolve(null);};reader.readAsDataURL(file);});}
+function pickPrefix(which){return which==='deliver'?'d':'p';}
+function onPick(which,input){var files=Array.prototype.slice.call(input.files||[]);input.value='';if(!files.length)return;
+  toast(t().processing);
+  Promise.all(files.map(compressImage)).then(function(uris){uris.forEach(function(u){if(u)pending[which].push(u);});renderPicks(which);});}
+function renderPicks(which){var box=document.getElementById(pickPrefix(which)+'-photopick');if(!box)return;box.innerHTML='';
+  pending[which].forEach(function(u,i){var d=document.createElement('div');d.className='thumb';d.innerHTML='<img src="'+u+'" alt=""><button class="rm" onclick="removePick(\''+which+'\','+i+')">✕</button>';box.appendChild(d);});}
+function removePick(which,i){pending[which].splice(i,1);renderPicks(which);}
+function allPhotos(){var out=[];store.records.forEach(function(r){(r.photos||[]).forEach(function(p){out.push({p:p,when:r.datetime,who:r.person,cap:r.notes||r.location||''});});});
+  out.sort(function(a,b){return new Date(b.when)-new Date(a.when);});return out;}
+function renderGallery(){var T=t();var ph=allPhotos();var g=document.getElementById('galleryGrid');
+  if(!ph.length){g.className='';g.innerHTML='<div class="empty"><span class="big">📷</span>'+T.noPhotos+'</div>';return;}
+  g.className='grid';g.innerHTML='';
+  ph.forEach(function(x){var cap=esc((x.who||'')+(x.cap?' · '+x.cap:''));
+    var d=document.createElement('div');d.className='gcell';
+    d.innerHTML='<img loading="lazy" src="'+photoThumb(x.p)+'" data-id="'+(x.p.id||'')+'" onerror="imgFallback(this)" alt=""><div class="cap">'+cap+'</div>';
+    (function(full,c){d.onclick=function(){openPhoto(full,c);};})(photoFull(x.p),(x.who||'')+(x.cap?' · '+x.cap:''));
+    g.appendChild(d);});}
+function openPhoto(src,cap){document.getElementById('lbimg').src=src;document.getElementById('lbcap').textContent=cap||'';document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lbimg').src='';}
+
+/* ===== Save (commit handles optimistic add + photo upload) ===== */
+function val(id){return document.getElementById(id).value;}
+function bump(id,by){var el=document.getElementById(id);el.value=Math.max(0,(parseInt(el.value)||0)+by);}
+function commit(rec,imgs,btn,clearFn,after){
+  if(btn)btn.disabled=true;
+  var finish=function(photoArr){rec.photos=photoArr||[];
+    rec.id='tmp'+Date.now();rec.datetime=new Date().toISOString();store.records.push(rec);
+    renderHome();renderReport();if(currentView==='photos')renderGallery();sync('busy');
+    Backend.add(rec).then(function(s){rec.id=s.id;rec.datetime=s.datetime||rec.datetime;sync('ok');toast(t().saved);})
+      .catch(function(){sync('off');toast(t().offline);})
+      .then(function(){if(btn)btn.disabled=false;if(clearFn)clearFn();if(after)after();});};
+  if(imgs&&imgs.length){toast(t().uploading);sync('busy');
+    Backend.savePhotos(imgs).then(function(saved){finish(saved);}).catch(function(){finish([]);});}
+  else finish([]);}
+function saveReceive(btn){var item=document.getElementById('r-item').value.trim();if(!item){toast(lang==='es'?'Escribe el artículo':'Enter an item');return;}
+  var rec={type:'receive',person:val('r-person'),category:selReceiveCat,item:item,qty:parseInt(val('r-qty'))||0,unit:val('r-unit'),source:document.getElementById('r-source').value.trim(),cats:[],notes:document.getElementById('r-notes').value.trim()};
+  commit(rec,[],btn,function(){document.getElementById('r-item').value='';document.getElementById('r-qty').value=1;document.getElementById('r-notes').value='';},function(){go('home');});}
+function saveCross(btn){var cats=CATS.filter(function(c){return selCrossCats[c];});
+  var rec={type:'cross',person:val('c-person'),trip:parseInt(val('c-trip'))||1,cats:cats,load:document.getElementById('c-load').value.trim(),notes:document.getElementById('c-notes').value.trim()};
+  commit(rec,[],btn,function(){selCrossCats={};renderChips();document.getElementById('c-load').value='';document.getElementById('c-notes').value='';document.getElementById('c-trip').value=1;},function(){go('home');});}
+function saveDistribute(btn){var pk=parseInt(val('d-packages'))||0,fam=parseInt(val('d-families'))||0;
+  if(pk===0&&fam===0){toast(lang==='es'?'Ingresa paquetes o familias':'Enter packages or families');return;}
+  var rec={type:'distribute',person:val('d-person'),packages:pk,location:document.getElementById('d-location').value.trim(),families:fam,cats:[],notes:document.getElementById('d-notes').value.trim()};
+  var imgs=pending.deliver.slice();pending.deliver=[];renderPicks('deliver');
+  commit(rec,imgs,btn,function(){document.getElementById('d-packages').value=0;document.getElementById('d-families').value=0;document.getElementById('d-location').value='';document.getElementById('d-notes').value='';},function(){go('home');});}
+function uploadPhotos(btn){if(!pending.photos.length){toast(t().addFirst);return;}
+  var rec={type:'photo',person:val('p-person'),notes:document.getElementById('p-caption').value.trim(),location:'',cats:[]};
+  var imgs=pending.photos.slice();pending.photos=[];renderPicks('photos');
+  commit(rec,imgs,btn,function(){document.getElementById('p-caption').value='';},function(){renderGallery();toast(t().photosSaved);});}
+function del(id){store.records=store.records.filter(function(x){return x.id!==id;});renderHome();renderReport();if(currentView==='photos')renderGallery();sync('busy');
+  Backend.del(id).then(function(){sync('ok');toast(t().deleted);}).catch(function(){sync('off');});}
+function copyReport(){var txt=document.getElementById('reportBody').textContent;if(navigator.clipboard){navigator.clipboard.writeText(txt).then(function(){toast(t().copied);}).catch(function(){toast(t().copied);});}else{toast(t().copied);}}
+function exportData(){var rows=[['id','type','datetime','person','category','item','qty','unit','source','trip','cats','load','packages','location','families','notes','photoCount']];
+  store.records.forEach(function(x){rows.push([x.id,x.type,x.datetime,x.person||'',x.category||'',x.item||'',x.qty||'',x.unit||'',x.source||'',x.trip||'',(x.cats||[]).join('|'),x.load||'',x.packages||'',x.location||'',x.families||'',(x.notes||'').replace(/\n/g,' '),(x.photos||[]).length]);});
+  var csv=rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='powerhouse-outreach.csv';a.click();URL.revokeObjectURL(url);}
+
+/* ===== Navigation ===== */
+function go(view){currentView=view;document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});document.getElementById('v-'+view).classList.add('active');
+  document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.go===view);});window.scrollTo(0,0);
+  if(view==='home'){renderHome();refresh();}if(view==='reports')renderReport();if(view==='photos'){renderGallery();refresh();}}
+function wire(){document.querySelectorAll('#nav button').forEach(function(b){b.onclick=function(){go(b.dataset.go);};});
+  document.querySelectorAll('#rangeSeg button').forEach(function(b){b.onclick=function(){range=b.dataset.range;document.querySelectorAll('#rangeSeg button').forEach(function(x){x.classList.toggle('on',x===b);});renderHome();};});
+  document.querySelectorAll('#repSeg button').forEach(function(b){b.onclick=function(){repKind=b.dataset.rep;document.querySelectorAll('#repSeg button').forEach(function(x){x.classList.toggle('on',x===b);});renderReport();};});
+  document.getElementById('settings').addEventListener('click',function(e){if(e.target.id==='settings')closeSettings();});}
+
+/* ===== Lang / Settings ===== */
+function toggleLang(){lang=lang==='en'?'es':'en';localStorage.setItem('ph_lang',lang);renderAll();if(currentView==='photos')renderGallery();}
+function openSettings(){document.getElementById('set-team-input').value=store.team.join('\n');document.getElementById('set-pastor-input').value=store.pastorEmail;document.getElementById('settings').classList.add('open');}
+function closeSettings(){document.getElementById('settings').classList.remove('open');}
+function saveSettingsUI(){var team=document.getElementById('set-team-input').value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  var email=document.getElementById('set-pastor-input').value.trim();if(team.length)store.team=team;if(email)store.pastorEmail=email;
+  renderPeople();renderReport();closeSettings();sync('busy');
+  Backend.saveSettings({team:team,pastorEmail:email}).then(function(){sync('ok');toast(t().settingsSaved);}).catch(function(){sync('off');});}
+
+/* ===== Toast ===== */
+var toastTimer;function toast(msg){var el=document.getElementById('toast');el.textContent='✓ '+msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show');},1600);}
+function sync(state){var d=document.getElementById('syncDot');d.className='syncdot'+(state==='busy'?' busy':state==='off'?' off':'');}
+
+/* ===== Refresh / Boot ===== */
+var refreshing=false;
+function refresh(){if(refreshing)return;refreshing=true;sync('busy');
+  Backend.load().then(function(d){if(d&&d.records){store.records=d.records;if(d.team&&d.team.length)store.team=d.team;if(d.pastorEmail)store.pastorEmail=d.pastorEmail;if(d.orgName)store.orgName=d.orgName;if(d.route)store.route=d.route;
+    renderPeople();if(currentView==='home')renderHome();if(currentView==='reports')renderReport();if(currentView==='photos')renderGallery();applyText();}sync('ok');})
+    .catch(function(){sync('off');}).then(function(){refreshing=false;});}
+function boot(){
+  Backend.load().then(function(d){store.orgName=d.orgName||store.orgName;store.route=d.route||store.route;store.team=(d.team&&d.team.length)?d.team:store.team;store.pastorEmail=d.pastorEmail||store.pastorEmail;store.emailLang=d.emailLang||store.emailLang;store.records=d.records||[];sync('ok');})
+    .catch(function(){sync('off');})
+    .then(function(){wire();renderAll();go('home');document.getElementById('boot').style.display='none';
+      if(hasGS)setInterval(function(){if(currentView==='home'||currentView==='photos')refresh();},45000);});}
+boot();
+</script>
+</body>
+</html>
